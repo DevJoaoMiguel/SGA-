@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Produto | SGA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/updateloja.css">
+</head>
+
+<body>
+  <div id="page-spinner" class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+
+
+  <a href='/lojaadm' class="btn-logout">
+    <i class='bx bx-log-out'></i>
+    Voltar
+  </a>
+
+
+  <div class="container">
+    <h1>Editar Produto</h1>
+
+
+    <div class="form-container">
+      <form action="/updateproduct/<%= product.id %>" method="POST">
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" value="<%= product.title %>" required>
+
+        <label for="price">Preço:</label>
+        <input type="number" id="price" name="price" value="<%= product.price %>" required>
+
+        <label for="typeroupas">Tipo de Roupa:</label>
+        <input type="text" id="typeroupas" name="typeroupas" value="<%= product.typeroupas %>" required>
+
+
+        <h2 style="color: #166599; margin-top: 20px;">Estoque</h2>
+        <div id="estoque-container">
+          <% product.stocks.forEach(stock=> { %>
+            <div class="tamanho-item">
+              <span class="tamanho-label">
+                <%= stock.tamanho %>
+              </span>
+              <input type="number" name="quantidades[<%= stock.tamanho %>]" placeholder="Quantidade" min="0"
+                value="<%= stock.quantidade %>" required>
+              <input type="hidden" name="tamanhos[]" value="<%= stock.tamanho %>">
+            </div>
+            <% }); %>
+        </div>
+
+        <button type="submit">Atualizar Produto</button>
+      </form>
+    </div>
+
+  </div>
+  <script>
+    const spinner = document.getElementById("page-spinner");
+
+    document.querySelectorAll("a[href]").forEach(link => {
+      link.addEventListener("click", function (e) {
+        const href = link.getAttribute("href");
+
+        // Evita exibir o spinner para âncoras, targets externos e javascript:void
+        if (
+          !href.startsWith("#") &&
+          !link.hasAttribute("target") &&
+          !href.startsWith("javascript:")
+        ) {
+          spinner.style.display = "flex";
+        }
+      });
+    });
+
+  </script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil | SGA</title>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+    <link rel="stylesheet" href="css/perfil.css">
+</head>
+<body>
+    <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+    <div class="container">
+        <h1><strong></strong> <%= admin.admin %></h1>
+
+        <a href='/homeadm' class="btn1" aria-label="Sair da conta">Inicio</a>
+
+        <!-- Foto de Perfil -->
+        <div class="profile-picture-container">
+            <img id="profile-picture" src="/uploads/<%= admin.foto %>" alt="Foto de perfil">
+            <form id="upload-form" action="/perfiladm/upload-foto" method="POST" enctype="multipart/form-data">
+                <label for="upload-photo" class="upload-label">Alterar Foto</label>
+                <input type="file" id="upload-photo" name="foto" accept="image/*" style="display: none;">
+                <button type="submit" class="btn">Salvar Foto</button>
+            </form>
+        </div>
+
+        <!-- Informações do Perfil -->
+        <div class="profile-info">
+    
+            <p><strong>Email:</strong> <%= admin.email %></p>
+            <p><strong>Etec:</strong> <%= admin.etec %></p>
+            
+        </div>
+    </div>
+   
+    
+
+
+    <script>
+       
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+
+        // Elementos do DOM
+        const profilePicture = document.getElementById('profile-picture');
+        const uploadPhoto = document.getElementById('upload-photo');
+        const uploadForm = document.getElementById('upload-form');
+
+        // Função para exibir a foto selecionada
+        uploadPhoto.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePicture.src = e.target.result; // Exibe a prévia da foto
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Função para enviar o formulário via AJAX
+        uploadForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            const formData = new FormData(uploadForm); // Cria um FormData com os dados do formulário
+
+            try {
+                const response = await fetch('/perfiladm/upload-foto', {
+                    method: 'POST',
+                    body: formData, // Envia o FormData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    profilePicture.src = data.fotoUrl; // Atualiza a foto na página
+                    alert('Foto atualizada com sucesso!');
+                                }
+            } catch (error) {
+                console.error('Erro:', error);
+        
+            }
+        });
+    </script>
+</body>
+</html>

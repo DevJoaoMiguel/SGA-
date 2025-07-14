@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <title>E-mail Confirmado | SGA</title>
+    <style>
+      /* Estilo geral */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      /* Container principal */
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      /* Título */
+      h2 {
+        color: #4fd98d;
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+
+      /* Mensagem de erro */
+      p {
+        color: #555;
+        font-size: 16px;
+        margin-bottom: 20px;
+      }
+
+      /* Botão */
+      a.btn {
+        display: inline-block;
+        text-decoration: none;
+        color: white;
+        background-color: #1a4d6d;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+      }
+
+      a.btn:hover {
+        background-color: #2c6b96;
+      }
+      /* Estilo da logo */
+      .logo {
+        max-width: 100px; /* Define a largura máxima */
+        height: auto; /* Mantém a proporção da altura */
+        margin-bottom: 20px; /* Espaço abaixo da logo */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+    <div class="container">
+      <img src="/logo.svg" alt="Logo" class="logo" />
+      <h2>E-mail Confirmado com Sucesso!</h2>
+      <a href="/login" class="btn">Ir para a página de login</a>
+    </div>
+    <script>
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Mostra o spinner apenas se o link não for âncora, JS ou com target
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+</script>
+  </body>
+  
+</html>

@@ -1,0 +1,208 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// MODELS
+
+model Achado {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Admin {
+  id            Int      @id @default(autoincrement())
+  admin         String   @unique
+  email         String   @unique
+  password      String
+  resetToken    String?
+  approvalToken String?
+  approved      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  roleId        Int
+  etec          String
+  foto          String?
+  role          Role     @relation(fields: [roleId], references: [id])
+
+  @@index([roleId])
+}
+
+model Corredor {
+  id        Int       @id @default(autoincrement())
+  numero    Int
+  salas     Sala[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Sala {
+  id         Int       @id @default(autoincrement())
+  numero     Int
+  corredorId Int
+  corredor   Corredor  @relation(fields: [corredorId], references: [id], onDelete: Cascade)
+  armarios   Locker[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  @@index([corredorId], name: "sala_corredor_idx")
+}
+
+model Locker {
+  id        Int       @id @default(autoincrement())
+  numero    Int       @unique
+  salaId    Int
+  sala      Sala      @relation(fields: [salaId], references: [id], onDelete: Cascade)
+  user      User?     @relation
+  status    String    @default("livre")
+  rentals   Rental[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([salaId])
+}
+
+model Pagamento {
+  id            Int      @id @default(autoincrement())
+  status        String
+  precoUnitario Float
+  quantidade    Int
+  precoTotal    Float
+  userId        Int
+  productId     Int?
+  tamanho       String?
+  user          User     @relation(fields: [userId], references: [id])
+  product       Product?  @relation(fields: [productId], references: [id])
+  rentals       Rental[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([userId])
+  @@index([productId])
+}
+
+model Product {
+  id           Int       @id @default(autoincrement())
+  title        String
+  price        Float
+  typeroupas   String
+  image        String?
+  paymentId    Int?
+  preferenceId String?
+  stocks       Stock[]
+    pedidos      Pedido[] 
+  payments     Pagamento[]
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+model Rental {
+  id           Int      @id @default(autoincrement())
+  lockerId     Int
+  userId       Int
+  startDate    DateTime
+  endDate      DateTime
+  rentType     String
+  status       String   @default("pendente")
+  price        Float
+  paymentId    Int?
+  preferenceId String?
+  locker       Locker   @relation(fields: [lockerId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id])
+  payment      Pagamento? @relation(fields: [paymentId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([lockerId])
+  @@index([userId])
+  @@index([paymentId])
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  admin     Admin[]
+  user      User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Stock {
+  id         Int      @id @default(autoincrement())
+  productId  Int
+  tamanho    String
+  quantidade Int
+  product    Product  @relation(fields: [productId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([productId, tamanho])
+}
+
+model User {
+  id                Int      @id @default(autoincrement())
+  rm                String   @unique
+  email             String   @unique
+  password          String
+  curso             String?
+  emailVerified     Boolean         @default(false)
+  verificationToken String?
+  resetToken        String?         @unique
+  lockerId          Int?            @unique
+  Nome              String
+  Sobrenome         String
+  roleId            Int
+  contract          String?
+  anoCurso          Int?
+  tipoEnsino        User_tipoEnsino
+  etec              String
+  foto              String?
+  payments          Pagamento[]
+  rentals           Rental[]
+  locker            Locker?         @relation(fields: [lockerId], references: [id], onDelete: Cascade)
+  role              Role            @relation(fields: [roleId], references: [id])
+  pedidos           Pedido[]
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([roleId])
+}
+
+enum PedidoStatus {
+  pendente
+  entregue
+}
+
+model Pedido {
+  id           Int      @id @default(autoincrement())
+  userId       Int
+  user         User     @relation(fields: [userId], references: [id])
+  nome         String
+  email        String
+  rm           String
+  produtoId    Int
+  produto      Product  @relation(fields: [produtoId], references: [id])
+  quantidade   Int
+  tamanho      String
+  totalPrice   Float
+  status       String   @default("pendente") // "pendente", "entregue", "cancelado"
+  criadoEm     DateTime @default(now())
+}
+
+
+
+
+// ENUMS
+
+enum User_tipoEnsino {
+  ENSINO_MEDIO
+  TECNICO
+}

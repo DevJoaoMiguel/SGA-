@@ -1,0 +1,383 @@
+/* Reset básico e base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: #f3f4f6;
+  color: #333;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sidebar lateral fixa estreita que expande ao passar o mouse */
+aside.menu-lateral {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50px; /* largura inicial */
+  height: 100vh; /* altura total da tela */
+  background: #173471;
+  border-radius: 0 10px 10px 0;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: width 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 1000;
+}
+
+aside.menu-lateral:hover {
+  width: 200px; /* largura expandida no hover */
+}
+
+/* Logo na sidebar */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+  transition: opacity 0.3s ease;
+}
+
+.logo-container img {
+  height: 40px;
+}
+
+/* Itens do menu lateral */
+.menu-icone {
+  width: 100%;
+  padding: 10px 20px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-icone:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-icone a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+  color: white;
+  width: 100%;
+}
+
+.menu-icone img {
+  width: 24px;
+  height: auto;
+  transition: width 0.3s ease, filter 0.3s ease;
+}
+
+aside.menu-lateral:hover .menu-icone img {
+  width: 32px;
+  filter: brightness(1.2);
+}
+
+.menu-icone span {
+  display: none;
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+aside.menu-lateral:hover .menu-icone span {
+  display: inline;
+}
+
+/* Ajuste do conteúdo principal para não ficar embaixo da sidebar */
+main {
+  margin-left: 50px; /* deve ser igual à largura inicial da sidebar */
+  max-width: 1200px;
+  padding: 2rem 1rem;
+  transition: margin-left 0.3s ease;
+  text-align: center;
+}
+
+aside.menu-lateral:hover ~ main {
+  margin-left: 200px; /* acompanha a expansão da sidebar */
+}
+
+/* Header, nav e outras áreas */
+nav {
+  background-color: #003366;
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+  width: 100%;
+  position: relative;
+  z-index: 1001;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  margin: 0 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+nav a:hover {
+  background-color: #002244;
+}
+
+/* Inputs de busca e containers */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.search-box {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(4, 49, 97, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-box i {
+  color: #043161;
+  font-size: 1.5rem;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+  width: 250px;
+}
+
+.search-box input::placeholder {
+  color: #9ca3af;
+}
+
+/* Cards de produtos */
+.product-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.product-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+}
+
+.product-img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.product-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-price {
+  color: #10b981;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.product-type {
+  font-size: 0.9rem;
+  color: #6b7280;
+  margin-bottom: 1rem;
+}
+
+.product-button {
+  background: #043161;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: auto; /* fixa no final do card */
+  transition: background 0.3s;
+}
+
+.product-button:hover {
+  background: #021c3b;
+}
+
+/* Perfil e logo containers */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-container img {
+  height: 40px;
+}
+
+.input-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.input-container input {
+  width: 70%;
+  max-width: 400px;
+  border-radius: 20px;
+  height: 15px;
+  padding: 10px 15px;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  transition: width 0.3s ease-in-out;
+}
+
+.input-container input:focus {
+  width: 85%;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-container .profile-text {
+  font-size: 14px;
+}
+
+.profile-img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* Box com fonte maior */
+#box {
+  font-size: x-large;
+}
+
+/* Spinner */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner {
+  border: 6px solid #ddd;
+  border-top: 6px solid #6366f1;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Media query para telas pequenas */
+@media (max-width: 768px) {
+  aside.menu-lateral {
+    width: 250px;
+    transform: translateX(-100%);
+  }
+
+  aside.menu-lateral:hover {
+    width: 250px;
+  }
+
+  aside.menu-lateral.active {
+    transform: translateX(0);
+  }
+
+  main {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 60px;
+  }
+
+  .menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .menu-overlay.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .menu-icone span {
+    display: inline;
+  }
+
+  .product-container {
+    grid-template-columns: 1fr;
+  }
+
+  input#searchInput {
+    max-width: 100%;
+    font-size: 1rem;
+  }
+
+  .product-img {
+    max-height: 150px;
+  }
+
+  .product-card {
+    padding: 1rem;
+  }
+}

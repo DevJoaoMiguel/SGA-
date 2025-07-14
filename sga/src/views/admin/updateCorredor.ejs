@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atualizar Corredor | SGA</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+  <link rel="stylesheet" href="css/updatecorredor.css">
+</head>
+<body>
+  <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+  <header>
+    <div class="logo-container" onclick="redirectToLogin()">
+      <img src="logo.svg" alt="logo" class="logo">
+      <img src="CPS.svg" alt="cps" class="logo" />
+    </div>
+    <div class="profile-container">
+      <img src="/perfil.svg" alt="Usuário" class="profile-img" />
+    </div>
+  </header>
+  
+  <div class="container">
+    <h1>ATUALIZAR CORREDOR</h1>
+    
+    <form method="POST" action="/corredoratualizar/<%= corredor.id %>">
+        <input type="hidden" name="corredorId" value="<%= corredor.id %>" />
+        <input type="hidden" name="salaId" value="<%= sala.id %>" />
+        <input type="hidden" name="armarioId" value="<%= armario.id %>" />
+    
+        <label for="corredorNumero">NÚMERO DO CORREDOR</label>
+        <input type="number" id="corredorNumero" name="corredorNumero" value="<%= corredor.numero %>" required />
+    
+        <label for="salaNumero">NÚMERO DA SALA</label>
+        <input type="number" id="salaNumero" name="salaNumero" value="<%= sala.numero %>" required />
+    
+        <label for="lockerNumero">NÚMERO DO ARMÁRIO</label>
+        <input type="number" id="lockerNumero" name="lockerNumero" value="<%= armario.numero %>" required />
+    
+        <button type="submit">ATUALIZAR</button>
+    </form>
+
+    <button class="back-button" onclick="window.location.href='/corredorcriar'">VOLTAR PARA CRIAÇÃO</button>
+  </div>
+
+  <script>
+
+
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+
+
+
+    function redirectToLogin() {
+      window.location.href = "/corredoradm"; 
+    }
+  </script>
+</body>
+</html>

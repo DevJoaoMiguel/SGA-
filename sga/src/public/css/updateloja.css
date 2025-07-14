@@ -1,0 +1,152 @@
+:root {
+  --primary-color: #043161;
+  --primary-light: #0a4c8b;
+  --secondary-color: #f8f9fa;
+  --text-color: #2c3e50;
+  --text-light: #6c757d;
+  --border-radius: 12px;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
+} 
+ 
+ 
+ body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-container img {
+      height: 40px;
+    }
+
+
+    .container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      color: #003366;
+      margin-bottom: 20px;
+    }
+
+    .form-container {
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+               background:#173471;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background-color: #002244;
+    }
+
+    a {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #2196F3;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .alert {
+      color: red;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .input-container input {
+      width: 30vw;
+      border-radius: 10px;
+      height: 30px;
+    }
+
+    /* BOTÃO DE SAIR */
+.btn-logout {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  color: var(--primary-color);
+  font-size: 1rem;
+  font-weight: 500;
+  border: none;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.btn-logout:hover {
+  color: var(--primary-light);
+  transform: translateY(-2px);
+}
+
+.btn-logout i {
+  font-size: 1.25rem;
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 901px) {
+  main {
+    padding: 1rem;
+    position: relative;
+  }
+
+  .btn-logout {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(5px);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+  }

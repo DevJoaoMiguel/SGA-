@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Financeiro - Loja</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/homefinaceiro.css">
+</head>
+
+<body>
+  <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+  <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+
+  <div class="container">
+    <a href="/homeadm" class="back-button">← Voltar</a>
+
+    <div class="dashboard-header">
+      <h2 class="dashboard-title">Administrativo </h2>
+    </div>
+
+    <div class="dashboard-grid">
+      <a href="/dashboard/financeiro" class="dashboard-card">
+        <h3>Dashboard de Vendas</h3>
+        <p>Visualize o faturamento, pedidos e produtos mais vendidos</p>
+      </a>
+      <a href="/dashboard/lockers" class="dashboard-card">
+        <h3>Dashboard de Armários</h3>
+        <p>Acompanhe a receita e ocupação dos armários</p>
+      </a>
+      <a href="/admin/pedidos" class="dashboard-card">
+        <h3>Gerenciar Pedidos</h3>
+        <p>Visualize e gerencie todos os pedidos da loja</p>
+      </a>
+    </div>
+  </div>
+<script>
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+</script>
+
+</body>
+
+</html>

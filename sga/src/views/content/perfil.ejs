@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil | SGA</title>
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        .profile-picture-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        #profile-picture {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #1a4e73;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #e4e4e4; /* Cor de fundo quando a foto não for carregada */
+            transition: transform 0.3s ease; /* Transição suave para o efeito */
+        }
+
+        #profile-picture:hover {
+            transform: scale(1.05); /* Efeito de zoom ao passar o mouse */
+        }
+
+  .upload-label {
+        display: inline-block;
+        background-color: #1a4e73;
+        color: #fff;
+        padding: 8px 15px;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease;
+        margin-bottom: 15px; /* Adicionando margem inferior para aumentar o espaçamento */
+        width: 100%;
+    }
+
+        .upload-label:hover {
+            background-color: #2980b9;
+        }
+
+        .profile-info {
+            text-align: left;
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .profile-info p {
+            margin: 10px 0;
+        }
+
+        .profile-info strong {
+            color: #333;
+        }
+        .btn1 {
+            background: none;
+            color: #00477c;
+            font-size: 16px;
+            font-weight: 600;
+            border: 1px solid #00477c;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }.btn1:hover {
+            color: #ffffff;
+            background-color: #00477c;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .btn1:focus {
+            outline: none;
+        }
+
+
+        .btn {
+            background-color: #1a4e73;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            #profile-picture {
+                width: 130px;
+                height: 130px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+    <a href='/home' class="btn1" aria-label="Sair da conta">Inicio</a>
+
+
+    <div class="container">
+        <h1><strong</strong> <span id="nome"><%= user.Nome %></span></h1>
+
+        <!-- Foto de Perfil -->
+        <div class="profile-picture-container">
+            <img id="profile-picture" src="<%= user.foto ? '/uploads/' + user.foto : '/images/default-profile.jpg' %>" alt="Foto de perfil">
+            <form id="upload-form" action="/perfil/upload-foto" method="POST" enctype="multipart/form-data">
+                <label for="upload-photo" class="upload-label">Alterar Foto</label>
+                <input type="file" id="upload-photo" name="foto" accept="image/*" style="display: none;">
+                <button type="submit" class="btn">Salvar Foto</button>
+            </form>
+        </div>
+
+        <!-- Informações do Perfil -->
+        <div class="profile-info">
+         
+            <p><strong>Email:</strong> <span id="email"><%= user.email %></span></p>
+            <p><strong>Curso:</strong> <span id="curso"><%= user.curso %></span></p>
+            <p><strong>Tipo de Ensino:</strong> <span id="tipo-ensino"><%= user.tipoEnsino %></span></p>
+            <p><strong>Número do Armário:</strong> <span><%= locker %></span></p>        
+    </div>
+
+    <script>
+
+
+
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+
+
+
+
+
+        // Elementos do DOM
+        const profilePicture = document.getElementById('profile-picture');
+        const uploadPhoto = document.getElementById('upload-photo');
+        const uploadForm = document.getElementById('upload-form');
+
+        // Função para exibir a foto selecionada
+        uploadPhoto.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    profilePicture.src = e.target.result; // Exibe a prévia da foto
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Função para enviar o formulário via AJAX
+        uploadForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            const formData = new FormData(uploadForm); // Cria um FormData com os dados do formulário
+
+            try {
+                const response = await fetch('/perfil/upload-foto', {
+                    method: 'POST',
+                    body: formData, // Envia o FormData
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    profilePicture.src = data.fotoUrl; // Atualiza a foto na página
+                    alert('Foto atualizada com sucesso!');
+                } else {
+                    alert('Erro ao atualizar a foto.');
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+            }
+        });
+    </script>
+</body>
+</html>

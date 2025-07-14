@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Adicionar Armários | SGA</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/addcorredor.css">
+</head>
+
+<body>
+  <div id="page-spinner" class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+  <div id="page-spinner" class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- BOTÃO COM LINK -->
+  <a href="/homeadm" class="back-button">
+    <i class='bx bx-arrow-back'></i>
+    Voltar
+  </a>
+  <div class="container">
+
+    <div id="errorModal" class="modalerro">
+      <div class="modal-content">
+        <span class="close-btn">&times;</span>
+        <h2>Erro</h2>
+        <p id="errorMessage"></p>
+      </div>
+    </div>
+
+    <h1>ADICIONAR ARMÁRIOS</h1>
+
+    <form id="lockerForm" method="POST" action="/corredor/add">
+      <label for="corredorNumero"></label>
+      <input type="number" id="corredorNumero" name="corredorNumero" placeholder="Número corredor" required />
+
+      <label for="salaNumero"></label>
+      <input type="number" id="salaNumero" name="salaNumero" placeholder="Número da sala" required />
+
+      <label for="lockerStart"></label>
+      <input type="number" id="lockerStart" name="lockerStart" placeholder="Inicio do intervalo" required />
+
+      <label for="lockerEnd"></label>
+      <input type="number" id="lockerEnd" name="lockerEnd" placeholder="Fim do intevalo" required />
+
+      <button type="submit">ADICIONAR</button>
+
+      <% if (typeof error !=='undefined' && error !=='' ) { %>
+        <div style="color: red; margin-top: 10px; font-size: 14px;">
+          <%= error %>
+        </div>
+        <% } %>
+    </form>
+  </div>
+  <br>
+  <br>
+  <table>
+    <thead>
+      <tr>
+        <th>Corredor</th>
+        <th>Sala</th>
+        <th>Armário</th>
+        <th>Ações</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if (corredores.length===0) { %>
+        <tr>
+          <td colspan="5" style="text-align: center;">Nenhum corredor cadastrado.</td>
+        </tr>
+        <% } else { %>
+          <% corredores.forEach(corredor=> { %>
+            <% corredor.salas.forEach(sala=> { %>
+              <% sala.armarios.forEach(armario=> { %>
+                <tr>
+                  <td>
+                    <%= corredor.numero %>
+                  </td>
+                  <td>
+                    <%= sala.numero %>
+                  </td>
+                  <td>
+                    <%= armario.numero %>
+                  </td>
+                  <td class="actions">
+                    <a href="/corredordelete/<%= corredor.id %>" class="delete-button">
+                      <i class='bx bx-trash-alt'></i>
+                    </a>
+                  </td>
+                </tr>
+                <% }) %>
+                  <% }) %>
+                    <% }) %>
+                      <% } %>
+    </tbody>
+  </table>
+
+  <script>
+
+
+    const spinner = document.getElementById("page-spinner");
+
+    document.querySelectorAll("a[href]").forEach(link => {
+      link.addEventListener("click", function (e) {
+        const href = link.getAttribute("href");
+
+        // Mostra o spinner apenas se o link não for âncora, JS ou com target
+        if (
+          !href.startsWith("#") &&
+          !link.hasAttribute("target") &&
+          !href.startsWith("javascript:")
+        ) {
+          spinner.style.display = "flex";
+        }
+      });
+    });
+
+
+
+
+
+    document.getElementById("lockerForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const form = event.target;
+      const start = parseInt(document.getElementById("lockerStart").value);
+      const end = parseInt(document.getElementById("lockerEnd").value);
+
+      if (isNaN(start) || isNaN(end) || start > end) {
+        alert("Por favor, insira um intervalo válido.");
+        return;
+      }
+
+      const lockerNumeros = [];
+      for (let i = start; i <= end; i++) {
+        lockerNumeros.push(i);
+      }
+
+      const inputHidden = document.createElement("input");
+      inputHidden.type = "hidden";
+      inputHidden.name = "lockerNumeros";
+      inputHidden.value = JSON.stringify(lockerNumeros);
+
+      form.appendChild(inputHidden);
+      form.submit();
+    });
+
+    function redirectToLogin() {
+      window.location.href = "/corredoradm";
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const error = urlParams.get('error');
+
+    if (error) {
+      document.getElementById('errorMessage').textContent = error;
+      document.getElementById('errorModal').style.display = 'block';
+    }
+
+    // Fecha o modal ao clicar no botão "X"
+    document.querySelector('.close-btn').addEventListener('click', function () {
+      document.getElementById('errorModal').style.display = 'none';
+      history.replaceState(null, null, window.location.pathname); // Remove o erro da URL
+    });
+
+    // Fecha o modal ao clicar fora da caixa
+    window.onclick = function (event) {
+      const modal = document.getElementById('errorModal');
+      if (event.target === modal) {
+        modal.style.display = 'none';
+        history.replaceState(null, null, window.location.pathname); // Remove o erro da URL
+      }
+    };
+
+  </script>
+</body>
+
+</html>

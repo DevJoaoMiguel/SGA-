@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administração de Pedidos | SGA</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #043161;
+      --secondary-color: #f8f9fa;
+      --text-color: #2c3e50;
+      --border-radius: 12px;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--secondary-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .back-button {
+      color: var(--primary-color);
+      display: inline-block;
+      text-decoration: none;
+      border-radius: 6px;
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
+
+  
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    .dashboard-title {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .dashboard-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      text-align: center;
+    }
+
+    .dashboard-card h3 {
+      margin: 0 0 0.8rem 0;
+      color: #666;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .value {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin: 0.3rem 0;
+    }
+
+    .filters-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.5rem;
+    }
+
+    .filters-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .filter-group label {
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 500;
+    }
+
+    .filter-group select,
+    .filter-group input {
+      padding: 0.6rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .table-container {
+      background: white;
+      padding: 1.2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      text-align: left;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #666;
+      font-weight: 500;
+      border-bottom: 1px solid #eee;
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9rem;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .status-badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .status-approved {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .status-pending {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .btn {
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-success {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .btn-success:hover {
+      background: #bbdefb;
+    }
+
+    .btn-info {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .btn-info:hover {
+      background: #c8e6c9;
+    }
+
+    .text-muted {
+      color: #666;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .filters-grid {
+        grid-template-columns: 1fr;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .action-buttons {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+  <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+
+  <div class="container">
+    <a href="/financeiro" class="back-button">← Voltar</a>
+
+    <div class="dashboard-header">
+      <h2 class="dashboard-title">Gerenciamento de Pedidos</h2>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <h3>Total de Pedidos</h3>
+        <div class="value"><%= stats.totalPedidos %></div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Pedidos Pendentes</h3>
+        <div class="value"><%= stats.pedidosPendentes %></div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Pedidos Aprovados</h3>
+        <div class="value"><%= stats.pedidosAprovados %></div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Receita Total</h3>
+        <div class="value">R$ <%= formatPrice(stats.receitaTotal) %></div>
+      </div>
+    </div>
+
+    <div class="filters-card">
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label for="statusFilter">Status</label>
+          <select id="statusFilter" class="form-select">
+            <option value="">Todos os Status</option>
+            <option value="Pendente">Pendentes</option>
+            <option value="Aprovado">Aprovados</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label for="dateFilter">Data</label>
+          <input type="date" id="dateFilter" class="form-control">
+        </div>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Data</th>
+            <th>Produto</th>
+            <th>Valor</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% pedidos.forEach(pedido => { %>
+            <tr>
+              <td>
+                <%= pedido.user.Nome %>
+                <div class="text-muted">RM: <%= pedido.user.rm %></div>
+              </td>
+              <td>
+                <%= new Date(pedido.criadoEm).toLocaleDateString('pt-BR') %>
+                <div class="text-muted"><%= new Date(pedido.criadoEm).toLocaleTimeString('pt-BR') %></div>
+              </td>
+              <td>
+                <%= pedido.produto.title %>
+                <div class="text-muted">Tamanho: <%= pedido.tamanho %></div>
+              </td>
+              <td>R$ <%= pedido.totalPrice.toFixed(2).replace('.', ',') %></td>
+              <td>
+                <span class="status-badge status-<%= pedido.status === 'approved' ? 'approved' : 'pending' %>">
+                  <%= pedido.status === 'approved' ? 'Aprovado' : 'Pendente' %>
+                </span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <% if (pedido.status === 'pendente') { %>
+                    <button 
+                      class="btn btn-success" 
+                      data-id="<%= pedido.id %>" 
+                      onclick="aceitarPedido(this)">
+                      <i class="bx bx-check"></i> Aceitar
+                    </button>
+                  <% } %>
+                  <button class="btn btn-info" onclick="verDetalhes('<%= pedido.id %>')">
+                    <i class="bx bx-detail"></i> Detalhes
+                  </button>
+                </div>
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+
+
+    function verDetalhes(id) {
+      window.location.href = `/pedido/${id}`;
+    }
+
+    async function aceitarPedido(button) {
+      const pedidoId = button.getAttribute('data-id');
+      if (!confirm('Tem certeza que deseja aprovar este pedido?')) return;
+
+      try {
+        const response = await fetch(`/admin/pedido/${pedidoId}/aceitar`, {
+          method: 'POST'
+        });
+
+        if (response.ok) {
+          const row = button.closest('tr');
+          const statusCell = row.querySelector('.status-badge');
+          statusCell.classList.remove('status-pending');
+          statusCell.classList.add('status-approved');
+          statusCell.textContent = 'Aprovado';
+          button.remove();
+        } else {
+          alert('Erro ao aprovar pedido.');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Erro na requisição.');
+      }
+    }
+
+    document.getElementById('statusFilter').addEventListener('change', filterTable);
+    document.getElementById('dateFilter').addEventListener('change', filterTable);
+
+    function filterTable() {
+      const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+      const dateFilter = document.getElementById('dateFilter').value;
+      const rows = document.querySelectorAll('tbody tr');
+
+      rows.forEach(row => {
+        const status = row.querySelector('.status-badge').textContent.toLowerCase();
+        const dateText = row.cells[1].textContent.trim().split('\n')[0]; // Get only the date part
+        const [day, month, year] = dateText.split('/');
+        
+        // Create date in local timezone
+        const rowDate = new Date(year, month - 1, day);
+        rowDate.setHours(12, 0, 0, 0); // Set to noon to avoid timezone issues
+        
+        const filterDate = dateFilter ? new Date(dateFilter + 'T12:00:00') : null;
+
+        const statusMatch = !statusFilter || status.includes(statusFilter);
+        const dateMatch = !filterDate || 
+          (rowDate.getDate() === filterDate.getDate() &&
+           rowDate.getMonth() === filterDate.getMonth() &&
+           rowDate.getFullYear() === filterDate.getFullYear());
+
+        row.style.display = statusMatch && dateMatch ? '' : 'none';
+      });
+    }
+  </script>
+</body>
+</html>

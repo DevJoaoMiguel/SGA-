@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Achados | SGA</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/updateachados.css">
+</head>
+
+<body>
+  <div id="page-spinner" class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <a href='/achadoadm' class="btn-logout">
+    <i class='bx bx-log-out'></i>
+    Voltar
+  </a>
+
+
+
+  <div class="container">
+    <h1>Editar achado</h1>
+
+
+    <div class="form-container">
+      <form action="/updateachado/<%= achado.id %>" method="POST">
+        <label for="title">Título:</label>
+        <input type="text" id="title" name="title" value="<%= achado.title %>" required>
+        <label for="description">Descrição:</label>
+        <input type="text" id="description" name="description" value="<%= achado.description %>" required>
+
+
+
+
+        <button type="submit">Atualizar achado</button>
+      </form>
+    </div>
+
+  </div>
+  <script>
+    const spinner = document.getElementById("page-spinner");
+
+    document.querySelectorAll("a[href]").forEach(link => {
+      link.addEventListener("click", function (e) {
+        const href = link.getAttribute("href");
+
+        // Mostra o spinner apenas se o link não for âncora, JS ou com target
+        if (
+          !href.startsWith("#") &&
+          !link.hasAttribute("target") &&
+          !href.startsWith("javascript:")
+        ) {
+          spinner.style.display = "flex";
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(13, 110, 253, 0.1);
+}
+
+.back-button:hover {
+    background: #0b5ed7;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+}
+
+.back-button i {
+    font-size: 1.4em;
+}
+ .delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    text-decoration: none;
+}
+
+
+
+.delete-button {
+    color: #dc3545;
+}
+
+.delete-button:hover {
+    background: rgba(220, 53, 69, 0.1);
+    transform: scale(1.1);
+    color: #bb2d3b;
+}

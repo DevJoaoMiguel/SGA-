@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achado e Perdido | SGA</title>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/add.css">
+</head>
+
+<body>
+    <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+    <a href='/homeadm' class="btn-logout">
+        <i class='bx bx-log-out'></i>
+       Voltar
+    </a>
+    <!-- Formulário dentro do container -->
+    <div class="container">
+        <div class="form-container">
+            <h1>ADICIONAR OBJETO PERDIDO</h1>
+            <form action="/achadoadd" method="POST" enctype="multipart/form-data">
+                <input type="text" name="title" id="title" placeholder="Título do Produto" required>
+                <input type="text" name="description" id="description" placeholder="Descrição" required>
+                <label for="image" class="custom-file-label">Escolher Imagem</label>
+                <input type="file" name="image" id="image" accept="image/*" required style="display: none;">
+                <button type="submit">Adicionar Objeto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Lista de achados FORA do container -->
+    <div class="list-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Descrição</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% achados.forEach(achado=> { %>
+                    <tr>
+                        <td>
+                            <%= achado.title %>
+                        </td>
+                        <td>
+                            <%= achado.description %>
+                        </td>
+                        <td class="actions">
+                            <a href="/updateachado/<%= achado.id %>" class="edit-button">
+                                <i class='bx bx-edit-alt'></i>
+                            <a href="/deleteachado/<%= achado.id %>" class="delete-button">
+                                <i class='bx bx-trash-alt'></i>
+                        </td>
+                    </tr>
+                    <% }); %>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Mostra o spinner apenas se o link não for âncora, JS ou com target
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+</script>
+</body>
+
+</html>

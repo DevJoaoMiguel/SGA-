@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mercado Pago| SGA </title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+  <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+  <h1>Pagamento com Mercado Pago</h1>
+
+  <!-- Formulário de pagamento -->
+  <form id="paymentForm">
+    <label for="userId">ID do Usuário:</label>
+    <input type="number" id="userId" name="userId" required>
+    <br>
+
+    <label for="amount">Valor:</label>
+    <input type="number" id="amount" name="amount" required>
+    <br>
+
+    <label for="type">Tipo de Pagamento:</label>
+    <input type="text" id="type" name="type" required>
+    <br>
+
+    <label for="quantity">Quantidade:</label>
+    <input type="number" id="quantity" name="quantity" required>
+    <br>
+
+    <button type="submit">Pagar Agora</button>
+  </form>
+
+  <script>
+    // Seleciona o formulário de pagamento
+    const paymentForm = document.getElementById('paymentForm');
+
+    // Adiciona um evento de submit ao formulário
+    paymentForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Previne o envio normal do formulário
+
+      // Obtém os dados do formulário
+      const userId = document.getElementById('userId').value;
+      const amount = document.getElementById('amount').value;
+      const type = document.getElementById('type').value;
+      const quantity = document.getElementById('quantity').value;
+
+      try {
+        // Faz uma requisição POST para o backend para criar o pagamento
+        const response = await fetch('http://localhost:3000/create-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId, amount, type, quantity })  // Envia os dados para o backend
+        });
+
+        // Converte a resposta para JSON
+        const data = await response.json();
+
+        // Verifica se o link de pagamento foi retornado
+        if (data.paymentLink) {
+          // Redireciona o usuário para o link de pagamento no Mercado Pago
+          window.location.href = data.paymentLink;
+        } else {
+          alert('Erro ao gerar o link de pagamento.');
+        }
+      } catch (error) {
+        console.error('Erro:', error);
+        alert('Ocorreu um erro ao processar o pagamento.');
+      }
+    });
+  </script>
+</body>
+</html>

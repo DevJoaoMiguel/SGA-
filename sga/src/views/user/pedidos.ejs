@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Pedidos | SGA</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #043161;
+      --primary-light: #0a4c8b;
+      --secondary-color: #f8f9fa;
+      --text-color: #2c3e50;
+      --text-light: #6c757d;
+      --border-radius: 12px;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      --shadow-hover: 0 8px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f0f2f5;
+      color: var(--text-color);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .back-button:hover {
+      color: var(--primary-color);
+    }
+
+    .back-button i {
+      font-size: 1.25rem;
+    }
+
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-bottom: 0.5rem;
+    }
+
+    .page-description {
+      color: var(--text-light);
+      font-size: 0.95rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .stat-title {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .orders-container {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .orders-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .orders-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .orders-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .orders-table th {
+      background: #f8f9fa;
+      padding: 1rem 1.5rem;
+      text-align: left;
+      font-weight: 500;
+      color: var(--text-light);
+      border-bottom: 1px solid #eee;
+    }
+
+    .orders-table td {
+      padding: 1.25rem 1.5rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .orders-table tr:hover {
+      background: #f8f9fa;
+    }
+
+    .product-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .product-image {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .product-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .product-name {
+      font-weight: 500;
+      color: var(--text-color);
+    }
+
+    .product-size {
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .status-approved {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .status-pending {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    .price {
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.625rem 1rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-light);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem;
+      color: var(--text-light);
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    /* Modal Styles */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .modal {
+      background: white;
+      border-radius: var(--border-radius);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalIn 0.3s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      background: #f0f2f5;
+      color: var(--primary-color);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .order-detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .detail-label {
+      font-size: 0.875rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    .detail-value {
+      font-size: 1rem;
+      color: var(--text-color);
+      font-weight: 500;
+    }
+
+    .product-detail {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: var(--border-radius);
+      margin-bottom: 1rem;
+    }
+
+    .product-detail img {
+      width: 80px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .product-detail-info {
+      flex: 1;
+    }
+
+    .product-detail-title {
+      font-weight: 600;
+      color: var(--text-color);
+      margin-bottom: 0.25rem;
+    }
+
+    .product-detail-meta {
+      font-size: 0.875rem;
+      color: var(--text-light);
+    }
+
+    .detail-price {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin-top: 0.5rem;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 1rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .orders-table {
+        display: block;
+        overflow-x: auto;
+      }
+
+      .order-detail-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <a href="/home" class="back-button">
+      <i class='bx bx-arrow-back'></i>
+      Voltar
+    </a>
+
+    <div class="page-header">
+      <h1 class="page-title">Meus Pedidos</h1>
+      <p class="page-description">Acompanhe todos os seus pedidos em um só lugar</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">Total de Pedidos</div>
+        <div class="stat-value"><%= pedidos ? pedidos.length : 0 %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Pedidos Pendentes</div>
+        <div class="stat-value"><%= pedidos ? pedidos.filter(p => p.status === 'pendente').length : 0 %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">Pedidos Aprovados</div>
+        <div class="stat-value"><%= pedidos ? pedidos.filter(p => p.status === 'approved').length : 0 %></div>
+      </div>
+    </div>
+
+    <div class="orders-container">
+      <div class="orders-header">
+        <h2 class="orders-title">Histórico de Pedidos</h2>
+      </div>
+
+      <% if (pedidos && pedidos.length > 0) { %>
+        <table class="orders-table">
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Produto</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% pedidos.forEach(pedido => { %>
+              <tr>
+                <td>
+                  <div class="date-info">
+                    <div><%= new Date(pedido.criadoEm).toLocaleDateString('pt-BR') %></div>
+                    <div class="product-size"><%= new Date(pedido.criadoEm).toLocaleTimeString('pt-BR') %></div>
+                  </div>
+                </td>
+                <td>
+                  <div class="product-info">
+                    <div class="product-details">
+                      <div class="product-name"><%= pedido.produto.title %></div>
+                      <div class="product-size">Tamanho: <%= pedido.tamanho %></div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="price">R$ <%= pedido.totalPrice.toFixed(2).replace('.', ',') %></div>
+                </td>
+                <td>
+                  <span class="status-badge status-<%= pedido.status === 'approved' ? 'approved' : 'pending' %>">
+                    <i class='bx bx-<%= pedido.status === 'approved' ? 'check-circle' : 'time' %>'></i>
+                    <%= pedido.status === 'approved' ? 'Aprovado' : 'Pendente' %>
+                  </span>
+                </td>
+                <td>
+                  <button onclick="showOrderDetails(this)" class="btn btn-primary" data-pedido='<%= JSON.stringify(pedido) %>'>
+                    <i class='bx bx-detail'></i>
+                    Ver Detalhes
+                  </button>
+                </td>
+              </tr>
+            <% }); %>
+          </tbody>
+        </table>
+      <% } else { %>
+        <div class="empty-state">
+          <i class='bx bx-shopping-bag'></i>
+          <h3>Nenhum pedido encontrado</h3>
+          <p>Você ainda não realizou nenhum pedido. Que tal começar agora?</p>
+          <a href="/loja" class="btn btn-primary">
+            <i class='bx bx-shopping-bag'></i>
+            Ver Produtos
+          </a>
+        </div>
+      <% } %>
+    </div>
+    
+    <!-- Modal Template -->
+    <div class="modal-backdrop" id="orderModal">
+      <div class="modal">
+        <div class="modal-header">
+          <h3 class="modal-title">Detalhes do Pedido</h3>
+          <button class="modal-close" onclick="closeModal()">
+            <i class='bx bx-x' style="font-size: 1.5rem;"></i>
+          </button>
+        </div>
+        <div class="modal-body" id="modalContent">
+          <!-- Content will be dynamically inserted here -->
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function formatDate(dateString) {
+        const date = new Date(dateString);
+        return new Intl.DateTimeFormat('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        }).format(date);
+      }
+
+      function formatPrice(price) {
+        return price.toFixed(2).replace('.', ',');
+      }
+
+      function showOrderDetails(button) {
+        const pedido = JSON.parse(button.dataset.pedido);
+        const modal = document.getElementById('orderModal');
+        const content = document.getElementById('modalContent');
+        
+        const statusClass = pedido.status === 'approved' ? 'approved' : 'pending';
+        const statusIcon = pedido.status === 'approved' ? 'check-circle' : 'time';
+        const statusText = pedido.status === 'approved' ? 'Aprovado' : 'Pendente';
+        const productImage = pedido.produto.image ? 
+          `<img src="/uploads/${pedido.produto.image}" alt="${pedido.produto.title}">` : 
+          '';
+
+        content.innerHTML = `
+          <div class="order-detail-grid">
+            <div class="detail-group">
+              <span class="detail-label">Data do Pedido</span>
+              <span class="detail-value">${formatDate(pedido.criadoEm)}</span>
+            </div>
+            <div class="detail-group">
+              <span class="detail-label">Status</span>
+              <span class="status-badge status-${statusClass}">
+                <i class="bx bx-${statusIcon}"></i>
+                ${statusText}
+              </span>
+            </div>
+          </div>
+
+          <div class="product-detail">
+            ${productImage}
+            <div class="product-detail-info">
+              <h4 class="product-detail-title">${pedido.produto.title}</h4>
+              <div class="product-detail-meta">
+                <p>Tamanho: ${pedido.tamanho}</p>
+              </div>
+              <div class="detail-price">
+                R$ ${formatPrice(pedido.totalPrice)}
+              </div>
+            </div>
+          </div>
+        `;
+
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeModal() {
+        const modal = document.getElementById('orderModal');
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // Close modal when clicking outside
+      document.getElementById('orderModal').addEventListener('click', (e) => {
+        if (e.target.classList.contains('modal-backdrop')) {
+          closeModal();
+        }
+      });
+
+      // Close modal with Escape key
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && document.getElementById('orderModal').classList.contains('active')) {
+          closeModal();
+        }
+      });
+    </script>
+  </main>
+</body>
+</html>

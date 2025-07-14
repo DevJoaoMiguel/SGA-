@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <title>Detalhes do Armário | SGA</title>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        header {
+            background-color: #2b6ca3;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-wrap: wrap;
+        }
+
+        main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Centraliza verticalmente */
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+        h2 {
+            color: #2b6ca3;
+        }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #2b6ca3;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #1a4e73;
+        }
+        #loader {
+            display: none;
+            margin-top: 20px;
+        }
+
+
+        .btn1 {
+            background: none;
+            color: #00477c;
+            font-size: 16px;
+            font-weight: 600;
+            border: 1px solid #00477c;
+            padding: 10px 20px;
+            cursor: pointer;
+            text-decoration: none;
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .btn1:hover {
+            color: #ffffff;
+            background-color: #00477c;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .btn1:focus {
+            outline: none;
+        }
+
+    </style>
+</head>
+<body>
+<div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+
+
+    <a href='/corredores' class="btn1" aria-label="voltar">voltar</a>
+
+<main>
+    <div class="container">
+        <h2>Detalhes do Armário</h2>
+        <p id="armario-info">Armário <%= numeroArmario %><br>Sala <%= salaId %></p>
+
+        <form id="rentalForm" method="POST" action="/rental/add">
+            <input type="hidden" name="lockerId" id="lockerId" value="<%= lockerId %>">
+            <input type="hidden" name="userId" id="userId" value="<%= userId %>">
+
+            <label for="rentType">Tipo de Aluguel:</label>
+            <select name="rentType" id="rentType">
+                <option value="period">Período - R$ 50,00</option>
+                <option value="year">Anual - R$ 100,00</option>
+            </select>
+
+            <button type="submit">Alugar Agora</button>
+            <div id="loader">Redirecionando para o pagamento...</div>
+        </form>
+    </div>
+</main>
+
+<script>
+
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+
+
+
+    const rentalForm = document.getElementById('rentalForm');
+    rentalForm.addEventListener('submit', function() {
+        document.getElementById('loader').style.display = 'block';
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,226 @@
+        body {
+       font-family: 'Inter', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Ajuste do mapa */
+
+        aside.menu-lateral {
+            width: 50px;
+            /* largura inicial bem estreita */
+            height: 104vh;
+            /* altura total da tela */
+            background:#173471;
+            position: fixed;
+            top: 0;
+            transition: width 0.3s ease;
+            /* Suaviza a transição */
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            border-radius: 0 10px 10px 0;
+            /* Bordas arredondadas para um visual mais suave */
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+            /* Sombra suave para dar profundidade */
+            z-index: 1000;
+            /* Garantir que o menu lateral fique acima de outros elementos */
+        }
+
+        aside.menu-lateral:hover {
+            width: 200px;
+            /* largura expandida quando passar o mouse */
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            /* Alinha os elementos verticalmente */
+            align-items: center;
+            justify-content: center;
+            /* Centraliza os logos */
+            gap: 10px;
+            margin: 20px 0;
+            transition: opacity 0.3s ease;
+            /* Suaviza a transição */
+        }
+
+        .logo-container img {
+            height: 40px;
+        }
+
+        .menu-icone {
+            width: 100%;
+            text-align: left;
+            margin: 10px 0;
+            /* Menor espaçamento entre os ícones */
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+            border-radius: 8px;
+            /* Bordas arredondadas nos ícones */
+            display: flex;
+            /* Flex para alinhar ícones e texto */
+            align-items: center;
+            /* Centraliza verticalmente */
+        }
+
+        .menu-icone:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-icone a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .menu-icone img {
+            width: 24px;
+            /* Reduzindo o tamanho do ícone */
+            height: auto;
+            transition: width 0.3s ease, filter 0.3s ease;
+            /* Suaviza a expansão do ícone e a mudança de cor */
+        }
+
+        .menu-lateral:hover .menu-icone img {
+            width: 32px;
+            /* Aumenta o tamanho do ícone ao expandir */
+            filter: brightness(1.2);
+            /* Aumenta o brilho do ícone quando o menu for expandido */
+        }
+
+        .menu-icone span {
+            display: none;
+            /* Inicialmente escondido */
+            font-size: 16px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .menu-lateral:hover .menu-icone span {
+            display: inline;
+            /* Exibe o texto ao passar o mouse */
+        }
+
+        .mapa-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .mapa-container img {
+            max-width: 90%;
+            margin-left: 33px;
+            height: auto;
+        }
+
+        /* Barra de corredores */
+
+        .barra {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+       background: #fff;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 10px;
+            max-width: 50%;
+            margin: 10px auto;
+            border-radius: 10px;
+        }
+
+        .botao {
+            color: white;
+            cursor: pointer;
+            padding: 8px 12px;
+            background-color: #173471;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .botao:hover {
+            background-color: #002244;
+        }
+
+        /* Seção de imagens dos corredores */
+
+        .corredor-imagens {
+            display: none;
+            margin-top: 20px;
+            border-radius: 30px;
+        }
+
+        .corredor-imagens img {
+            max-width: 50%;
+            height: 500px;
+            margin: 5px 0;
+            margin-left: 45px;
+            border-radius: 22px;
+            border-radius: 30px;
+        }
+
+        @media screen and (max-width: 768px) {
+    .corredor-imagens img {
+        max-width: 80%; /* Ajusta a largura para ocupar mais espaço na tela */
+        height: auto; /* Mantém a proporção original da imagem */
+        margin-left: 53px; /* Centraliza a imagem */
+        margin-right: auto;
+        display: block; /* Garante que a margem funcione corretamente */
+        border-radius: 30px;
+    }
+}
+
+
+        /* Responsividade para telas pequenas */
+
+        @media (max-width: 600px) {
+            .barra {
+                flex-wrap: wrap;
+                gap: 3px;
+                max-width: 50%;
+                padding: 8px;
+            }
+
+            .botao {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            .mapa-container img {
+                max-width: 75%;
+                border-radius: 30px;
+            }
+        }
+
+        /* Responsividade para telas maiores (PC) */
+
+        @media (min-width: 601px) {
+            .mapa-container img {
+                max-width: 60%;
+                border-radius: 30px;
+
+                /* Ajuste a largura das imagens no PC */
+            }
+
+            .corredor-imagens img {
+                max-width: 70%;
+                border-radius: 30px;
+                /* Ajuste as imagens dos corredores no PC */
+            }
+        }
+
+        h3 {
+            color: #166599;
+        }
+
+        h1 {
+            color: #166599;
+            margin-left: 20px;
+
+
+        }

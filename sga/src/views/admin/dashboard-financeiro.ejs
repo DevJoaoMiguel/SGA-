@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard Financeiro - Loja</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary-color: #043161;
+      --secondary-color: #f8f9fa;
+      --text-color: #2c3e50;
+      --border-radius: 12px;
+      --shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--secondary-color);
+      color: var(--text-color);
+      line-height: 1.6;
+    }
+
+    .container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      background: white;
+      padding: 1.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    .dashboard-title {
+      font-size: 1.5rem;
+      color: var(--primary-color);
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .dashboard-filters {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .filter-button {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--primary-color);
+      border-radius: 6px;
+      background: white;
+      color: var(--primary-color);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .filter-button:hover, .filter-button.active {
+      background: var(--primary-color);
+      color: white;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .dashboard-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .dashboard-card h3 {
+      margin: 0 0 0.8rem 0;
+      color: #666;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .value {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary-color);
+      margin: 0.3rem 0;
+    }
+
+    .chart-container {
+      background: white;
+      padding: 1.2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 1.2rem;
+      height: 300px;
+    }
+
+    .chart-title {
+      margin: 0 0 1rem 0;
+      color: var(--primary-color);
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .product-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+
+    .product-card h3 {
+      margin: 0 0 0.8rem 0;
+      color: var(--primary-color);
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .product-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .product-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.9rem;
+    }
+
+    .product-item:last-child {
+      border-bottom: none;
+    }
+    .back-button {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      
+      color: var(--primary-color);
+      text-decoration: none;
+      border-radius: 6px;
+      margin-bottom: 1.2rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+      .products-grid {
+        grid-template-columns: 1fr;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .chart-container {
+        height: 250px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <a href="/financeiro" class="back-button">← Voltar</a>
+
+    <div class="dashboard-header">
+      <h2 class="dashboard-title">Dashboard Financeiro - Loja</h2>
+      <div class="dashboard-filters">
+        <button class="filter-button" onclick="updateCharts('week')">Semana</button>
+        <button class="filter-button active" onclick="updateCharts('month')">Mês</button>
+        <button class="filter-button" onclick="updateCharts('year')">Ano</button>
+      </div>
+    </div>
+
+    <div class="dashboard-grid">
+      <div class="dashboard-card">
+        <h3>Faturamento Total</h3>
+        <div class="value" id="totalVendas">R$ <%= totalVendas %></div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Pedidos Pendentes</h3>
+        <div class="value" id="pedidosPendentes"><%= pedidosPendentes %></div>
+      </div>
+      <div class="dashboard-card">
+        <h3>Pedidos Entregues</h3>
+        <div class="value" id="pedidosEntregues"><%= pedidosEntregues %></div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <h3 class="chart-title">Faturamento por Período</h3>
+      <canvas id="faturamentoChart"></canvas>
+    </div>
+
+    <div class="chart-container">
+      <h3 class="chart-title">Produtos Mais Vendidos</h3>
+      <canvas id="produtosChart"></canvas>
+    </div>
+
+    <div class="products-grid">
+      <div class="product-card">
+        <h3>Produtos em Baixo Estoque</h3>
+        <ul class="product-list" id="estoqueBaixoList">
+          <% if (produtosBaixoEstoque && produtosBaixoEstoque.length > 0) { %>
+            <% produtosBaixoEstoque.forEach(produto => { %>
+              <li class="product-item">
+                <span>${produto.name}</span>
+                <span>${produto.quantity} unidades</span>
+              </li>
+            <% }); %>
+          <% } else { %>
+            <li class="product-item">Nenhum produto com estoque baixo</li>
+          <% } %>
+        </ul>
+      </div>
+
+      <div class="product-card">
+        <h3>Últimas Vendas</h3>
+        <ul class="product-list" id="ultimasVendasList">
+          <% if (ultimasVendas && ultimasVendas.length > 0) { %>
+            <% ultimasVendas.forEach(venda => { %>
+              <li class="product-item">
+                <span>${venda.produto.title}</span>
+                <span>R$ ${venda.totalPrice.toFixed(2)}</span>
+              </li>
+            <% }); %>
+          <% } else { %>
+            <li class="product-item">Nenhuma venda registrada</li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Configuração global do Chart.js
+    Chart.defaults.font.family = 'Inter';
+    Chart.defaults.color = '#666';
+    Chart.defaults.borderColor = '#eee';
+    Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    Chart.defaults.plugins.tooltip.padding = 8;
+    Chart.defaults.plugins.tooltip.cornerRadius = 4;
+    Chart.defaults.plugins.tooltip.titleFont = { size: 12, weight: '600' };
+    Chart.defaults.plugins.tooltip.bodyFont = { size: 11 };
+
+    // Gráfico de Faturamento
+    const faturamentoCtx = document.getElementById('faturamentoChart').getContext('2d');
+    const faturamentoChart = new Chart(faturamentoCtx, {
+      type: 'line',
+      data: {
+        labels: <%- JSON.stringify(faturamentoPorMes.map(f => f.mes)) %>,
+        datasets: [{
+          label: 'Faturamento',
+          data: <%- JSON.stringify(faturamentoPorMes.map(f => f.valor)) %>,
+          borderColor: '#043161',
+          backgroundColor: 'rgba(4, 49, 97, 0.05)',
+          tension: 0.3,
+          fill: true,
+          pointBackgroundColor: '#043161',
+          pointBorderColor: '#fff',
+          pointBorderWidth: 1,
+          pointRadius: 3,
+          pointHoverRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false,
+            callbacks: {
+              label: function(context) {
+                return `R$ ${context.raw.toFixed(2)}`;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: '#f0f0f0',
+              drawBorder: false
+            },
+            ticks: {
+              padding: 8,
+              font: {
+                size: 10
+              },
+              callback: function(value) {
+                return `R$ ${value.toFixed(2)}`;
+              }
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              padding: 8,
+              font: {
+                size: 10
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Gráfico de Produtos
+    const produtosCtx = document.getElementById('produtosChart').getContext('2d');
+    const produtosChart = new Chart(produtosCtx, {
+      type: 'bar',
+      data: {
+        labels: <%- JSON.stringify(produtosMaisVendidos.map(p => p.nome)) %>,
+        datasets: [{
+          label: 'Vendas',
+          data: <%- JSON.stringify(produtosMaisVendidos.map(p => p.quantidade)) %>,
+          backgroundColor: '#043161',
+          borderRadius: 4,
+          barThickness: 12,
+          maxBarThickness: 20
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false
+          },
+          tooltip: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: '#f0f0f0',
+              drawBorder: false
+            },
+            ticks: {
+              padding: 8,
+              font: {
+                size: 10
+              }
+            }
+          },
+          x: {
+            grid: {
+              display: false
+            },
+            ticks: {
+              padding: 8,
+              font: {
+                size: 10
+              }
+            }
+          }
+        }
+      }
+    });
+
+    // Função para atualizar os gráficos
+    function updateCharts(period) {
+      // Remover classe active de todos os botões
+      document.querySelectorAll('.filter-button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      // Adicionar classe active ao botão clicado
+      event.target.classList.add('active');
+
+      // Mostrar loading
+      document.querySelectorAll('.chart-container').forEach(container => {
+        container.style.opacity = '0.5';
+      });
+
+      // Fazer requisição para atualizar os dados
+      fetch(`/dashboard/financeiro?period=${period}`, {
+        headers: {
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          // Atualizar valores dos cards
+          document.getElementById('totalVendas').textContent = `R$ ${data.totalVendas}`;
+          document.getElementById('pedidosPendentes').textContent = data.pedidosPendentes;
+          document.getElementById('pedidosEntregues').textContent = data.pedidosEntregues;
+
+          // Atualizar gráfico de faturamento
+          const labels = data.faturamentoPorMes.map(item => item.mes);
+          const valores = data.faturamentoPorMes.map(item => item.valor);
+
+          if (faturamentoChart) {
+            faturamentoChart.data.labels = labels;
+            faturamentoChart.data.datasets[0].data = valores;
+            faturamentoChart.update();
+          }
+
+          // Atualizar gráfico de produtos mais vendidos
+          const produtosLabels = data.produtosMaisVendidos.map(item => item.nome);
+          const produtosValores = data.produtosMaisVendidos.map(item => item.quantidade);
+
+          if (produtosChart) {
+            produtosChart.data.labels = produtosLabels;
+            produtosChart.data.datasets[0].data = produtosValores;
+            produtosChart.update();
+          }
+
+          // Atualizar lista de produtos com estoque baixo
+          const estoqueBaixoList = document.getElementById('estoqueBaixoList');
+          if (estoqueBaixoList) {
+            estoqueBaixoList.innerHTML = data.produtosBaixoEstoque.map(produto => `
+              <li class="product-item">
+                <span>${produto.name}</span>
+                <span>${produto.quantity} unidades</span>
+              </li>
+            `).join('');
+          }
+
+          // Atualizar lista de últimas vendas
+          const ultimasVendasList = document.getElementById('ultimasVendasList');
+          if (ultimasVendasList) {
+            ultimasVendasList.innerHTML = data.ultimasVendas.map(venda => `
+              <li class="product-item">
+                <span>${venda.produto.title}</span>
+                <span>R$ ${venda.totalPrice.toFixed(2)}</span>
+              </li>
+            `).join('');
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao atualizar dados:', error);
+          alert(`Erro ao atualizar dados do dashboard: ${error.message}`);
+          // Remover loading em caso de erro
+          document.querySelectorAll('.chart-container').forEach(container => {
+            container.style.opacity = '1';
+          });
+        });
+    }
+  </script>
+
+</body>
+</html> 

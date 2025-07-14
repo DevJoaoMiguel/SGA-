@@ -1,0 +1,483 @@
+/* Reset básico e base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: #f3f4f6;
+  color: #333;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sidebar lateral fixa estreita que expande ao passar o mouse */
+aside.menu-lateral {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50px; /* largura inicial */
+  height: 100vh; /* altura total da tela */
+  background: #173471;
+  border-radius: 0 10px 10px 0;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: width 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 1000;
+}
+
+aside.menu-lateral:hover {
+  width: 200px; /* largura expandida no hover */
+}
+
+/* Logo na sidebar */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+  transition: opacity 0.3s ease;
+}
+
+.logo-container img {
+  height: 40px;
+}
+
+/* Itens do menu lateral */
+.menu-icone {
+  width: 100%;
+  padding: 10px 20px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menu-icone:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-icone a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+  color: white;
+  width: 100%;
+}
+
+.menu-icone img {
+  width: 24px;
+  height: auto;
+  transition: width 0.3s ease, filter 0.3s ease;
+}
+
+aside.menu-lateral:hover .menu-icone img {
+  width: 32px;
+  filter: brightness(1.2);
+}
+
+.menu-icone span {
+  display: none;
+  font-size: 16px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+aside.menu-lateral:hover .menu-icone span {
+  display: inline;
+}
+
+/* Ajuste do conteúdo principal para não ficar embaixo da sidebar */
+main {
+  margin-left: 50px; /* deve ser igual à largura inicial da sidebar */
+  max-width: 1200px;
+  padding: 2rem 1rem;
+  transition: margin-left 0.3s ease;
+  text-align: center;
+}
+
+aside.menu-lateral:hover ~ main {
+  margin-left: 200px; /* acompanha a expansão da sidebar */
+}
+
+/* Estilos para o menu mobile */
+.hamburger-menu {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.hamburger-menu:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.hamburger-menu i {
+  font-size: 24px;
+  color: #333;
+  transition: transform 0.3s ease;
+}
+
+.hamburger-menu.active i {
+  transform: rotate(90deg);
+}
+
+/* Media query para telas pequenas */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  aside.menu-lateral {
+    width: 250px;
+    transform: translateX(-100%);
+  }
+
+  aside.menu-lateral:hover {
+    width: 250px;
+  }
+
+  aside.menu-lateral.active {
+    transform: translateX(0);
+  }
+
+  main {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 60px;
+  }
+
+  .menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .menu-overlay.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .menu-icone span {
+    display: inline;
+  }
+}
+
+/* Header no topo */
+header {
+  background-color: #2b6ca3;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-container img {
+  height: 40px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.search-box {
+  background-color: white;
+  padding: 10px 20px;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(4, 49, 97, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-box i {
+  color: #043161;
+  font-size: 1.5rem;
+}
+
+.search-box input {
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  background: transparent;
+  width: 250px;
+}
+
+.search-box input::placeholder {
+  color: #9ca3af;
+}
+
+.profile-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-container .profile-text {
+  font-size: 14px;
+}
+
+.profile-img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+nav {
+  background-color: #003366;
+  display: flex;
+  padding: 15px 0;
+  text-align: center;
+  width: 100%;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  margin: 0 15px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+nav a:hover {
+  background-color: #002244;
+}
+
+#box {
+  font-size: x-large;
+}
+
+h1 {
+  font-size: 23px;
+  color: #003366;
+  margin-bottom: 20px;
+}
+
+/* Container para cards de achados e perdidos, estilo grid responsivo */
+.achados-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 0 10px;
+}
+
+/* Card individual */
+.achados-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.05);
+  padding: 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.achados-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Imagem do produto */
+.achados-img {
+  width: 100%;
+  max-height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+/* Título do produto */
+.achados-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  text-transform: capitalize;
+  color: #003366;
+}
+
+/* Preço */
+.achados-price {
+  font-size: 16px;
+  color: #2b6ca3;
+  margin: 5px 0;
+  font-weight: bold;
+}
+
+/* Tipo e tamanho */
+.achados-type,
+.achados-size {
+  font-size: 14px;
+  color: #555;
+  margin: 3px 0;
+}
+
+/* Botão para ação */
+.achados-button {
+  background-color: #003366;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: auto;
+  transition: background-color 0.3s ease;
+  width: 80%;
+  align-self: center;
+  font-weight: 600;
+}
+
+.achados-button:hover {
+  background-color: #002244;
+}
+
+/* Responsividade para celulares */
+@media (max-width: 480px) {
+  .logo-container img {
+    height: 30px;
+  }
+
+  .search-box input {
+    width: 80%;
+    margin-left: 70px;
+    margin-top: 10px;
+  }
+
+  .profile-container {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  /* Cards adaptados para celular */
+  .achados-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 160px;
+    margin: 12px auto;
+    padding: 18px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 300px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  }
+
+  .achados-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .achados-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 12px;
+  }
+
+  .achados-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    text-transform: capitalize;
+    margin: 8px 0;
+  }
+
+  .achados-price {
+    font-size: 14px;
+    color: #1d7f81;
+    font-weight: bold;
+  }
+
+  .achados-button {
+    background-color: #1d7f81;
+    color: white;
+    font-size: 14px;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    width: 100%;
+  }
+
+  .achados-button:hover {
+    background-color: #155d60;
+    transform: translateY(-3px);
+  }
+}
+
+/* Spinner para carregamento */
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ccc;
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

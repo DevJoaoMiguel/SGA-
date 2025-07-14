@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção de Armários | SGA</title>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+    <link rel="stylesheet" href="./css/corredores.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+    <style>
+       .hamburger-menu {
+      display: none;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+
+    .hamburger-menu:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    }
+
+    .hamburger-menu i {
+      font-size: 24px;
+      color: #333;
+      transition: transform 0.3s ease;
+    }
+
+    .hamburger-menu.active i {
+      transform: rotate(90deg);
+    }
+
+    @media (max-width: 768px) {
+      .hamburger-menu {
+        display: block;
+      }
+
+      .menu-lateral {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transform: translateX(-100%);
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        z-index: 999;
+      }
+
+      .menu-lateral.active {
+        transform: translateX(0);
+      }
+
+      main {
+        margin-left: 0;
+        width: 100%;
+        padding-top: 60px; /* Add space for the hamburger menu */
+      }
+
+      .input-container {
+        margin-top: 10px;
+      }
+
+      /* Add overlay when menu is open */
+      .menu-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 998;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .menu-overlay.active {
+        display: block;
+        opacity: 1;
+      }
+
+      /* Improve product grid responsiveness */
+      .product-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 15px;
+        padding: 10px;
+      }
+
+      .product-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      }
+    }
+
+    /* Add smooth transitions for all interactive elements */
+    .menu-lateral .menu-icone a {
+      transition: all 0.3s ease;
+    }
+
+    .menu-lateral .menu-icone a:hover {
+      transform: translateX(5px);
+    }
+
+        .corredores-container {
+            margin: 20px auto;
+            max-width: 800px;
+        }
+
+        .corredor-tabs {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .tabs-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .tab-button {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #f8f9fa;
+            color: #212529;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .tab-button i {
+            font-size: 1.2em;
+            color: #0d6efd;
+            transition: color 0.3s ease;
+        }
+
+        .tab-button:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .tab-button.active {
+            background: #0d6efd !important;
+            color: white !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+            border-color: #0d6efd;
+        }
+
+        .tab-button.active i {
+            color: white !important;
+        }
+
+        .tab-button.active:hover {
+            background: #0b5ed7 !important;
+            box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+        }
+
+        .corredor-info {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .sala-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .sala-header h3 {
+            margin: 0;
+            font-size: 1.2em;
+            color: #212529;
+            font-weight: 600;
+        }
+
+        .sala-header .carrossel-btn {
+            position: static;
+            transform: none;
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: none;
+            border: none;
+            color: #0d6efd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sala-header .carrossel-btn:hover {
+            background: #e9ecef;
+            transform: scale(1.1);
+        }
+
+        .armarios-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .armario {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .armario:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .armario.livre {
+            background: #198754;
+            color: white;
+        }
+
+        .armario.ocupado {
+            background: #dc3545;
+            color: white;
+        }
+
+        .status-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            padding: 15px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-bloco {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .status-bloco.ocupado {
+            background: #dc3545;
+        }
+
+        .status-bloco.livre {
+            background: #198754;
+        }
+
+        .status-texto {
+            color: #212529;
+            font-weight: 500;
+        }
+
+        .modalerro {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modalerro div {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 10px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-content h2 {
+            color: #0d6efd;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            text-align: center;
+        }
+
+        .contract-text {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 15px;
+            margin-bottom: 20px;
+        }
+
+        .contract-text p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .contract-text::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .contract-text::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .contract-text::-webkit-scrollbar-thumb {
+            background: #0d6efd;
+            border-radius: 4px;
+        }
+
+        .contract-text::-webkit-scrollbar-thumb:hover {
+            background: #0b5ed7;
+        }
+
+        .terms-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .terms-checkbox input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .terms-checkbox label {
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+        }
+
+        #continueBtn {
+            width: 100%;
+            padding: 12px;
+            background: #0d6efd;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #continueBtn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+
+        #continueBtn:not(:disabled):hover {
+            background: #0b5ed7;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(13, 110, 253, 0.2);
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            color: #333;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .modal-content {
+                margin: 10% auto;
+                width: 95%;
+                padding: 20px;
+            }
+
+            .modal-content h2 {
+                font-size: 1.5em;
+            }
+
+            .contract-text {
+                max-height: 50vh;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <button class="hamburger-menu" id="hamburgerMenu">
+        <i class='bx bx-menu'></i>
+    </button>
+
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <div id="page-spinner" class="spinner-overlay">
+        <div class="spinner"></div>
+    </div>
+
+    <aside class="menu-lateral">
+        <div class="logo-container">
+            <img src="logo.svg" alt="Logo">
+            <img src="CPS.svg" alt="CPS">
+        </div>
+        <div class="menu-icone">
+            <a href="/home" class="icone" title="INÍCIO"> <i class='bx bx-home' id="box"></i><span>Inicio</span></a>
+        </div>
+        <div class="menu-icone">
+            <a href="/perfil" class="icone" title="PERFIL"><i class='bx bx-user' id="box"></i><span>Perfil</span></a>
+        </div>
+        <div class="menu-icone">
+            <a href="/logout" class="icone" title="SAIR"><i class='bx bx-log-out' id="box"></i><span>Sair</span></a>
+        </div>
+    </aside>
+
+    <main>
+        <div id="errorModal" class="modalerro">
+            <div>
+                <span class="close-btn">&times;</span>
+                <h2>Erro</h2>
+                <p id="errorMessage"></p>
+            </div>
+        </div>
+
+        <div class="corredores-container">
+            <div class="corredor-tabs">
+                    <% if (corredores.length===0) { %>
+                        <p>Nenhum corredor cadastrado.</p>
+                        <% } else { %>
+                    <div class="tabs-container">
+                            <% corredores.forEach((corredor, index)=> { %>
+                            <button class="tab-button <%= index === 0 ? 'active' : '' %>" 
+                                    onclick="selecionarCorredor('<%= corredor.numero %>')"
+                                    data-corredor="<%= corredor.numero %>">
+                                <i class='bx bx-building'></i>
+                                <span>Corredor <%= corredor.numero %></span>
+                            </button>
+                        <% }) %>
+                                </div>
+                                    <% } %>
+            </div>
+        </div>
+
+        <div class="corredor-info-container">
+            <% corredores.forEach(corredor=> { %>
+                <div class="corredor-info" id="corredor-<%= corredor.numero %>">
+                    <% if (corredor.salas && corredor.salas.length> 0) { %>
+                        <% corredor.salas.forEach((sala, index)=> { %>
+                            <div class="sala" id="sala-<%= corredor.numero %>-<%= sala.numero %>"
+                                class="<%= index === 0 ? 'sala-ativa' : 'sala-inativa' %>">
+                                <div class="sala-header">
+                                    <button class="carrossel-btn prev" onclick="navegarSala(<%= corredor.numero %>, <%= sala.numero %>, -1)">
+                                        <i class='bx bx-chevron-left'></i>
+                                    </button>
+                                    <h3>Sala <%= sala.numero %></h3>
+                                    <button class="carrossel-btn next" onclick="navegarSala(<%= corredor.numero %>, <%= sala.numero %>, 1)">
+                                        <i class='bx bx-chevron-right'></i>
+                                    </button>
+                                </div>
+
+                                <% if (sala.armarios && sala.armarios.length> 0) { %>
+                                    <div class="armarios-grid">
+                                        <% sala.armarios.forEach(armario=> { %>
+                                            <div class="armario <%= armario.status === 'livre' ? 'livre' : 'ocupado' %>"
+                                                data-sala="<%= sala.numero %>" 
+                                                data-armario="<%= armario.numero %>"
+                                                data-id="<%= armario.id %>" 
+                                                data-status="<%= armario.status %>"
+                                                class="<%= armario.status === 'ocupado' ? 'cursor-pointer' : 'cursor-not-allowed' %>"
+                                                onclick="selecionarArmario(this)">
+                                                <p><%= armario.numero %></p>
+                                            </div>
+                                        <% }); %>
+                                    </div>
+                                <% } else { %>
+                                    <p>Sem armários cadastrados.</p>
+                                <% } %>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <p>Sem salas cadastradas.</p>
+                    <% } %>
+                </div>
+            <% }) %>
+        </div>
+
+        <div class="status-container">
+            <div class="status-item">
+                <div class="status-bloco ocupado"></div>
+                <span class="status-texto">Ocupado</span>
+            </div>
+            <div class="status-item">
+                <div class="status-bloco livre"></div>
+                <span class="status-texto">Livre</span>
+            </div>
+        </div>
+    </main>
+
+    <div id="contractModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Termos de Uso do Armário</h2>
+            <div class="contract-text">
+                <p>1. O armário é da escola. A aquisição de armários na ETEC Bento Quirino é feita pela administração da
+                    Escola, sob total responsabilidade da mesma.</p>
+                <p>2. Os horários de venda dos armários serão divulgados no mural da Secretaria no pátio, no site da
+                    escola e no facebook.</p>
+                <p>3. Impreterivelmente, até o dia 20 de dezembro (anual) ou 05 de julho (semestral), todos os armários
+                    deverão ser desocupados, inclusive os livros devem ser retirados e entregues a coordenação do núcleo
+                    comum, para passarem por limpeza e manutenção e serem reorganizados para o ano seguinte. Assim, o
+                    aluno deve retirar todos os seus pertences ao fim do ano letivo. A escola não se responsabilizará
+                    por pertences deixados nos armários.</p>
+                <p>4. Materiais que permanecerem nos armários após o prazo para retirada dos mesmos, serão doados.</p>
+                <p>5. A escola se reserva o direito de abrir qualquer armário em caso de necessidade.</p>
+                <p>6. Por amostragem será feita a vistoria nos armários dos alunos, em qualquer dia e horário, sendo que
+                    o mesmo deverá abrir e acompanhar a vistoria de seu armário, diante de um membro da equipe diretiva
+                    ou coordenação, registrando-se na ficha individual as eventuais irregularidades que serão também
+                    levadas ao conhecimento de seus pais ou responsáveis.</p>
+                <p>7. É PROIBIDO colar adesivos, escrever, desenhar ou fazer qualquer tipo de anotação na porta dos
+                    armários ou em qualquer parte da estrutura do mesmo. Se trata de um patrimônio público.</p>
+                <p>8. É vedada a colocação de qualquer objeto na parte externa, em cima ou em baixo dos armários.</p>
+                <p>9. O cadeado para segurança das portas de cada armário é de total responsabilidade do aluno que
+                    contratou o serviço.</p>
+                <p>10. Não será de responsabilidade da administração da escola, o desaparecimento de objetos ou
+                    pertences dentro de armários sem cadeado.</p>
+                <p>11. Não é permitido armazenar ou guardar ALIMENTOS dentro dos armários ou qualquer objetivo que gere
+                    mal cheiro.</p>
+                <p>12. Os armários devem ser usados somente para guardar material didático.</p>
+                <p>13. Para não dificultar o andamento das aulas, os armários deverão ser utilizados somente no horário
+                    que o aluno não estiver em aula.</p>
+                <p>14. Questões referentes à manutenção ou problemas nos armários devem ser protocoladas na secretaria,
+                    que serão direcionadas para providência.</p>
+                <p>15. O aluno deverá devolver o armário nas condições em que o recebeu, ou seja, em perfeito estado de
+                    conservação e limpeza, até o dia 20 de dezembro (anual) ou 05 de julho (semestral).</p>
+                <p>16. É vedada a troca de armários entre alunos.</p>
+                <p>17. É vedada a abertura e/ou manuseio do conteúdo de qualquer armário que não seja o atribuído pela
+                    administração da escola ao aluno.</p>
+                <p>18. Eventuais custos com reparo do armário, devido à utilização inadequada, serão cobrados do(s)
+                    usuário(s).</p>
+                <p>19. Em caso de pandemia, terremoto, catástrofes naturais ou algo do tipo que não sejam de
+                    responsabilidade da APM ou da Etec Bento Quirino, impossibilitando o uso do armário em um
+                    determinado período de tempo, não nos responsabilizamos pela devolução do dinheiro investido.</p>
+                <p>20. Ao clicar em aceitar os termos voçê estara concordando com todos os termos acima.</p>
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="acceptTerms">
+                    <label for="acceptTerms">Li e aceito os termos do contrato</label>
+                </div>
+                <button id="continueBtn" disabled>Continuar para Pagamento</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById("hamburgerMenu");
+    const menuLateral = document.querySelector(".menu-lateral");
+    const menuOverlay = document.getElementById("menuOverlay");
+    const spinner = document.getElementById("page-spinner");
+
+    // Toggle menu on hamburger click
+    hamburger.addEventListener("click", () => {
+      menuLateral.classList.toggle("active");
+      menuOverlay.classList.toggle("active");
+      hamburger.classList.toggle("active");
+    });
+
+    // Close menu when clicking overlay
+    menuOverlay.addEventListener("click", () => {
+      menuLateral.classList.remove("active");
+      menuOverlay.classList.remove("active");
+      hamburger.classList.remove("active");
+    });
+
+    // Close menu when clicking a menu item
+    document.querySelectorAll(".menu-lateral a").forEach(link => {
+      link.addEventListener("click", () => {
+        menuLateral.classList.remove("active");
+        menuOverlay.classList.remove("active");
+        hamburger.classList.remove("active");
+      });
+    });
+
+    // Hide spinner when page loads
+    window.addEventListener('load', () => {
+      spinner.style.display = 'none';
+    });
+
+    document.querySelectorAll("a[href]").forEach(link => {
+      link.addEventListener("click", function (e) {
+        const href = link.getAttribute("href");
+
+        // Evita exibir o spinner para âncoras, targets externos e javascript:void
+        if (
+          !href.startsWith("#") &&
+          !link.hasAttribute("target") &&
+          !href.startsWith("javascript:")
+        ) {
+          spinner.style.display = "flex";
+        }
+      });
+    });
+
+        // Close menu when clicking a menu item
+        document.querySelectorAll(".menu-lateral a").forEach(link => {
+            link.addEventListener("click", () => {
+                menuLateral.classList.remove("active");
+                menuOverlay.classList.remove("active");
+                hamburger.classList.remove("active");
+            });
+        });
+
+        function selecionarArmario(armario) {
+            const status = armario.getAttribute('data-status');
+            const armarioId = armario.getAttribute('data-id');
+            
+            // Só permite clicar se o armário estiver ocupado
+            if (status === 'ocupado') {
+                window.location.href = `/buscarUsuarioPorArmario/${armarioId}`;
+            }
+        }
+
+        // Funções para o carrossel e navegação entre salas
+        let currentIndex = 0;
+
+        function moverCarrossel(direction) {
+            const items = document.querySelectorAll('.carrossel-item');
+            const totalItems = items.length;
+
+            items[currentIndex].classList.remove('active');
+            currentIndex = (currentIndex + direction + totalItems) % totalItems;
+            items[currentIndex].classList.add('active');
+
+            const corredorNumero = items[currentIndex].getAttribute('data-corredor');
+            selecionarCorredor(corredorNumero);
+        }
+
+        function selecionarCorredor(corredorNumero) {
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+
+            // Add active class to selected tab
+            const selectedTab = document.querySelector(`[data-corredor="${corredorNumero}"]`);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Hide all corridor info and reset their display states
+            document.querySelectorAll('.corredor-info').forEach(info => {
+                info.style.display = 'none';
+                // Reset all rooms in this corridor to hidden
+                const rooms = info.querySelectorAll('.sala');
+                rooms.forEach(room => {
+                    room.style.display = 'none';
+                    room.style.opacity = '0';
+                });
+            });
+
+            // Show selected corridor info
+            const corredorInfo = document.getElementById(`corredor-${corredorNumero}`);
+            if (corredorInfo) {
+                corredorInfo.style.display = 'block';
+                // Show only the first room
+                const primeiraSala = corredorInfo.querySelector('.sala');
+                if (primeiraSala) {
+                    primeiraSala.style.display = 'block';
+                    // Add a small delay to ensure proper animation
+                    setTimeout(() => {
+                        primeiraSala.style.opacity = '1';
+                    }, 50);
+                }
+            }
+        }
+
+        function navegarSala(corredorId, salaNumero, direcao) {
+            const salas = document.querySelectorAll(`#corredor-${corredorId} .sala`);
+            let indiceAtual = -1;
+
+            salas.forEach((sala, index) => {
+                if (sala.id === `sala-${corredorId}-${salaNumero}`) {
+                    indiceAtual = index;
+                }
+            });
+
+            const proximaSala = salas[indiceAtual + direcao];
+            if (proximaSala) {
+                // Hide all rooms first
+                salas.forEach(sala => {
+                    sala.style.display = 'none';
+                    sala.style.opacity = '0';
+                });
+                // Show the next room
+                proximaSala.style.display = 'block';
+                // Add a small delay to ensure proper animation
+                setTimeout(() => {
+                    proximaSala.style.opacity = '1';
+                }, 50);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Seleciona todos os containers de armários
+            const armariosContainers = document.querySelectorAll('.armarios-grid');
+
+            armariosContainers.forEach(armariosGrid => {
+                if (!armariosGrid) return;
+
+                // Configura o container como flexível
+                armariosGrid.style.display = 'flex';
+                armariosGrid.style.flexWrap = 'wrap';
+                armariosGrid.style.justifyContent = 'center';
+                armariosGrid.style.gap = '20px';
+
+                // Seleciona os armários dentro do container atual
+                const armarios = Array.from(armariosGrid.querySelectorAll('.armario'));
+
+                // Limpa o container antes de reorganizar
+                armariosGrid.innerHTML = '';
+
+                const itensPorContainer = 20; // 4 colunas x 5 linhas
+                let containerAtual = null;
+
+                armarios.forEach((armario, index) => {
+                    // A cada 20 armários, cria um novo container
+                    if (index % itensPorContainer === 0) {
+                        containerAtual = document.createElement('div');
+                        containerAtual.classList.add('armarios-grid-container');
+
+                        // Define o layout do grid
+                        containerAtual.style.display = 'grid';
+                        containerAtual.style.gridTemplateColumns = 'repeat(4, 50px)';
+                        containerAtual.style.gridTemplateRows = 'repeat(5, 50px)';
+                        containerAtual.style.gap = '10px';
+                        containerAtual.style.justifyContent = 'center';
+                        containerAtual.style.alignItems = 'center';
+
+                        // Adiciona o novo container ao container pai
+                        armariosGrid.appendChild(containerAtual);
+                    }
+
+                    // Adiciona o armário ao container atual
+                    containerAtual.appendChild(armario);
+                });
+            });
+        });
+
+        // Controle da Modal
+        const modal = document.getElementById("contractModal");
+        const span = document.getElementsByClassName("close")[0];
+        const acceptCheckbox = document.getElementById("acceptTerms");
+        const continueBtn = document.getElementById("continueBtn");
+        let selectedLockerId = null;
+        let selectedSalaId = null;
+        let selectedArmarioNumero = null;
+
+        function selecionarArmario(armario) {
+            if (armario.dataset.status === 'livre') {
+                selectedLockerId = armario.dataset.id;
+                selectedSalaId = armario.dataset.sala;
+                selectedArmarioNumero = armario.dataset.armario;
+                modal.style.display = "block";
+                document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+            }
+        }
+
+        // Fechar modal
+        span.onclick = () => {
+            modal.style.display = "none";
+            document.body.style.overflow = "auto"; // Re-enable scrolling
+        };
+
+        window.onclick = (event) => {
+            if (event.target === modal) {
+                modal.style.display = "none";
+                document.body.style.overflow = "auto"; // Re-enable scrolling
+            }
+        };
+
+        // Habilitar botão quando checkbox marcado
+        acceptCheckbox.addEventListener('change', (e) => {
+            continueBtn.disabled = !e.target.checked;
+        });
+
+        // Redirecionar para compra
+        continueBtn.addEventListener('click', () => {
+            window.location.href = `/escolheraluguel/${selectedLockerId}/${selectedSalaId}/${selectedArmarioNumero}`;
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+
+        if (error) {
+            document.getElementById('errorMessage').textContent = error;
+            document.getElementById('errorModal').style.display = 'block';
+        }
+
+        // Fecha o modal ao clicar no botão "X"
+        document.querySelector('.close-btn').addEventListener('click', function () {
+            document.getElementById('errorModal').style.display = 'none';
+        });
+
+        // Fecha o modal ao clicar fora da caixa
+        window.onclick = function (event) {
+            const modal = document.getElementById('errorModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+    </script>
+</body>
+
+</html>

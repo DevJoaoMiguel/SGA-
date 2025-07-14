@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | SGA</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body>
+  <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+  <a href='/logout' class="btn-logout">
+    <i class='bx bx-log-out'></i>
+    Sair
+  </a>
+
+  <main>
+    <div class="page-header">
+      <h1 class="page-title">Bem-vindo ao SGA</h1>
+      <p class="page-description">Sistema de Gerenciamento Acadêmico</p>
+    </div>
+
+    <div class="grid-container">
+      <a href="/corredores" class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class='bx bx-lock-alt'></i>
+          </div>
+          <h2 class="card-title">Armários</h2>
+        </div>
+        <p class="card-description">Alugue seu armário e mantenha seus pertences organizados.</p>
+        <div class="card-footer">
+          Alugar Armário
+          <i class='bx bx-arrow-right'></i>
+        </div>
+      </a>
+
+      <a href="/loja" class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class='bx bx-shopping-bag'></i>
+          </div>
+          <h2 class="card-title">Loja</h2>
+        </div>
+        <p class="card-description">Compre produtos exclusivos da sua instituição.</p>
+        <div class="card-footer">
+          Acessar Loja
+          <i class='bx bx-arrow-right'></i>
+        </div>
+      </a>
+
+      <a href="/pedidos" class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class='bx bx-package'></i>
+          </div>
+          <h2 class="card-title">Meus Pedidos</h2>
+        </div>
+        <p class="card-description">Acompanhe o status dos seus pedidos e compras.</p>
+        <div class="card-footer">
+          Ver Pedidos
+          <i class='bx bx-arrow-right'></i>
+        </div>
+      </a>
+
+      <a href="/achado" class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class='bx bx-search-alt'></i>
+          </div>
+          <h2 class="card-title">Achados e Perdidos</h2>
+        </div>
+        <p class="card-description">Encontre seus pertences perdidos na escola.</p>
+        <div class="card-footer">
+          Ver Achados
+          <i class='bx bx-arrow-right'></i>
+        </div>
+      </a>
+    </div>
+  </main>
+  <script>
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+</script>
+
+</body>
+
+</html>

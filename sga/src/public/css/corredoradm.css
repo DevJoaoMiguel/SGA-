@@ -1,0 +1,587 @@
+/* Reset básico e base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background: #f3f4f6;
+  color: #333;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* Sidebar lateral fixa estreita que expande ao passar o mouse */
+aside.menu-lateral {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 50px; /* largura inicial */
+  height: 100vh; /* altura total da tela */
+  background: #173471;
+  border-radius: 0 10px 10px 0;
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: width 0.3s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  z-index: 1000;
+}
+
+aside.menu-lateral:hover {
+  width: 200px; /* largura expandida no hover */
+}
+
+/* Logo na sidebar */
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+  transition: opacity 0.3s ease;
+}
+
+.logo-container img {
+  height: 30px; /* Tamanho reduzido para igualar à loja */
+  width: auto;
+  transition: all 0.3s ease;
+}
+
+aside.menu-lateral:hover .logo-container img {
+  height: 35px; /* Tamanho expandido no hover */
+}
+
+/* Itens do menu lateral */
+.menu-icone {
+  width: 100%;
+  text-align: left;
+  margin: 10px 0;
+  padding: 10px 20px;
+  transition: background-color 0.3s ease;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.menu-icone:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.menu-icone a {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  text-decoration: none;
+  color: white;
+  width: 100%;
+}
+
+.menu-icone i {
+  font-size: 20px; /* Tamanho base dos ícones */
+  transition: all 0.3s ease;
+}
+
+aside.menu-lateral:hover .menu-icone i {
+  font-size: 22px; /* Tamanho expandido no hover */
+}
+
+.menu-icone span {
+  display: none;
+  font-size: 14px; /* Tamanho do texto reduzido */
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+aside.menu-lateral:hover .menu-icone span {
+  display: inline;
+}
+
+/* Ajuste do conteúdo principal para não ficar embaixo da sidebar */
+main {
+  margin-left: 50px; /* deve ser igual à largura inicial da sidebar */
+  max-width: 1200px;
+  padding: 2rem 1rem;
+  transition: margin-left 0.3s ease;
+  text-align: center;
+}
+
+aside.menu-lateral:hover ~ main {
+  margin-left: 200px; /* acompanha a expansão da sidebar */
+}
+
+/* Estilos para o menu mobile */
+.hamburger-menu {
+  display: none;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.hamburger-menu:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+.hamburger-menu i {
+  font-size: 24px;
+  color: #333;
+  transition: transform 0.3s ease;
+}
+
+.hamburger-menu.active i {
+  transform: rotate(90deg);
+}
+
+/* Media query para telas pequenas */
+@media (max-width: 768px) {
+  .hamburger-menu {
+    display: block;
+  }
+
+  aside.menu-lateral {
+    width: 250px;
+    transform: translateX(-100%);
+  }
+
+  aside.menu-lateral:hover {
+    width: 250px;
+  }
+
+  aside.menu-lateral.active {
+    transform: translateX(0);
+  }
+
+  main {
+    margin-left: 0;
+    width: 100%;
+    padding-top: 60px;
+  }
+
+  .menu-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .menu-overlay.active {
+    display: block;
+    opacity: 1;
+  }
+
+  .menu-icone span {
+    display: inline;
+  }
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.corredores-container,
+.corredor-info-container,
+.status-container {
+  margin-left: 0;
+}
+
+.corredores-container {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+@media (max-width: 480px) {
+  .corredores-container {
+    padding: 15px;
+    max-width: 68%;
+    margin: 10px auto;
+    margin-left: 54px;
+  }
+}
+
+
+.carrossel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.carrossel-container {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carrossel-item {
+  min-width: 100%;
+  padding: 12px;
+  text-align: center;
+  background-color: #0d2b3e;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+
+@media (max-width: 480px) {
+  .carrossel-item {
+    padding: 8px;
+    font-size: 14px;
+  }
+}
+
+.carrossel-item.active {
+  background-color: #0d2b3e;
+}
+
+.carrossel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: #0d2b3e;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 20px;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+@media (max-width: 480px) {
+  .carrossel-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    padding: 8px;
+  }
+}
+
+
+
+.carrossel-btn.prev {
+  left: 10px;
+}
+
+.carrossel-btn.next {
+  right: 10px;
+}
+
+.corredor-info-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.corredor-info {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  display: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  margin-left: 10%;
+}
+
+.armarios-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-rows: repeat(5, 80px);
+  grid-auto-flow: column;
+  gap: 4px;
+  justify-content: center;
+  align-items: center;
+}
+
+.armario {
+  background-color: #ffffff;
+  padding: 3px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  height: 50px;
+  width: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: all 0.3s ease;
+}
+
+.armario.livre {
+    background-color: #2ecc71;
+            color: white;
+}
+
+.armario.ocupado {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.armario.selecionado {
+  background-color: #3498db;
+  color: white;
+}
+
+
+.sala-carrossel {
+  height: 20px;
+
+  background-color: #0d2b3e;
+  color: white;
+  border-radius: 10px;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px; /* Espaçamento reduzido para centralizar melhor nas telas pequenas */
+  font-size: 18px;
+  font-weight: bold;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 84%; /* Garante que ocupe toda a largura disponível */
+  margin-left: 69px;
+}
+
+.sala-btn {
+  background-color: #0d2b3e;
+  border: none;
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.sala-btn:hover {
+  background-color: #163047;
+}
+
+/* Garantir que no celular os elementos fiquem bem centralizados */
+@media (max-width: 768px) {
+  .sala-carrossel {
+    gap: 15px; /* Ajuste o espaço entre as setas e o título */
+    font-size: 16px; /* Tamanho de fonte menor em telas pequenas */
+    padding: 8px 15px; /* Reduzir o padding para um ajuste melhor */
+    margin-left: 4px;
+  }
+
+  .sala-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 18px; /* Reduzir o tamanho das setas em telas pequenas */
+  }
+}
+
+
+
+.status-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #444;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.status-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.status-bloco {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: transform 0.3s;
+}
+
+.status-bloco:hover {
+  transform: scale(1.1);
+}
+
+.ocupado {
+  background-color: #e74c3c;
+}
+
+.livre {
+  background-color: #9ae994;
+}
+
+@media (max-width: 768px) {
+  main {
+    padding: 1rem;
+  }
+
+  .armarios-grid {
+    grid-template-rows: repeat(5, 60px);
+  }
+
+  .armario {
+    height: 40px;
+    width: 40px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .armarios-grid {
+    grid-template-rows: repeat(5, 60px);
+  }
+
+  .armario {
+    height: 40px;
+    width: 40px;
+    font-size: 11px;
+  }
+
+  .status-container {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 375px) {
+  .armario {
+    height: 36px;
+    width: 36px;
+    font-size: 10px;
+  }
+
+  .lockers {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.lockers {
+  width: 14px;
+  height: 14px;
+}
+
+
+  .spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #ccc;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+
+ .status-container {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding: 10px;
+  background-color: #ffffff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  width: 83%; /* largura maior */
+  margin-left: 32px;
+  max-width: 100%; /* para não ultrapassar a tela */
+}
+
+@media (max-width: 480px) {
+  .status-container {
+    gap: 10px;
+    font-size: 12px;
+    margin-top: 15px;
+            width: 76%;
+  }
+}
+
+
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Espaço entre o bloco colorido e o texto */
+}
+
+.status-bloco {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}
+
+.status-bloco.ocupado {
+  background-color: #e74c3c; /* vermelho para ocupado */
+}
+
+.status-bloco.livre {
+  background-color: #2ecc71; /* verde para livre */
+}
+
+.status-texto {
+  font-size: 16px;
+  color: #333;
+}

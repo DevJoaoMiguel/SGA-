@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administração de Produtos | SGA</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+  <link rel="stylesheet" href="css/add.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+</head>
+<div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+<a href='/homeadm' class="btn-logout">
+  <i class='bx bx-log-out'></i>
+  Voltar
+</a>
+<div class="container">
+  <div class="form-container">
+    <h1> ADICIONAR NOVO PRODUTO </h1>
+    <form action="/productadd" method="POST" enctype="multipart/form-data">
+      <input type="text" name="title" id="title" placeholder="Título do Produto" required>
+      <input type="number" name="price" id="price" step="0.01" placeholder="Preço" required>
+      <input type="text" name="typeroupas" id="typeroupas" placeholder="Descrição" required>
+
+      <div id="tamanhos-container">
+        <div class="tamanho-item">
+          <div class="input-group">
+            <span class="input-prefix">UNICO</span>
+            <input type="number" name="quantidades[]" min="0" value="0" required>
+          </div>
+          <input type="hidden" name="tamanhos[]" value="UNICO">
+        </div>
+
+        <div class="tamanho-item">
+          <div class="input-group">
+            <span class="input-prefix">PP</span>
+            <input type="number" name="quantidades[]" min="0" value="0" required>
+          </div>
+          <input type="hidden" name="tamanhos[]" value="PP">
+        </div>
+
+        <div class="tamanho-item">
+          <div class="input-group">
+            <span class="input-prefix">P</span>
+            <input type="number" name="quantidades[]" min="0" value="0" required>
+          </div>
+          <input type="hidden" name="tamanhos[]" value="P">
+        </div>
+
+        <div class="tamanho-item">
+          <div class="input-group">
+            <span class="input-prefix">M</span>
+            <input type="number" name="quantidades[]" min="0" value="0" required>
+          </div>
+          <input type="hidden" name="tamanhos[]" value="M">
+        </div>
+
+        <div class="tamanho-item">
+          <div class="input-group">
+            <span class="input-prefix">G</span>
+            <input type="number" name="quantidades[]" min="0" value="0" required>
+          </div>
+          <input type="hidden" name="tamanhos[]" value="G">
+        </div>
+
+        <div class="tamanho-item">
+          <div class="input-group">
+            <span class="input-prefix">GG</span>
+            <input type="number" name="quantidades[]" min="0" value="0" required>
+          </div>
+          <input type="hidden" name="tamanhos[]" value="GG">
+        </div>
+
+        <div class="tamanho-item">
+          <div class="input-group">
+            <span class="input-prefix">XG</span>
+            <input type="number" name="quantidades[]" min="0" value="0" required>
+          </div>
+          <input type="hidden" name="tamanhos[]" value="XG">
+        </div>
+      </div>
+
+
+      <label for="image" class="custom-file-label">Escolher Imagem</label>
+      <input type="file" name="image" id="image" accept="image/*" required style="display: none;">
+
+      <button type="submit">Adicionar Produto</button>
+    </form>
+  </div>
+</div>
+<br>
+<br>
+
+
+
+<!-- Tabela de Estoque -->
+<h1 style="color: #166599; margin-top: 30px;">Estoque dos Produtos</h1>
+
+<% products.forEach(product=> { %>
+  <div class="product-stock-container" style="margin-bottom: 30px;">
+    <h3 style="color: #166599; display: flex; justify-content: center; ">
+      <%= product.title %>
+    </h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Tamanho</th>
+          <th>Quantidade</th>
+          <th>Ações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (product.stocks && product.stocks.length> 0) { %>
+          <% product.stocks.forEach(stock=> { %>
+            <tr>
+              <td>
+                <%= stock.tamanho %>
+              </td>
+              <td>
+                <%= stock.quantidade %>
+              </td>
+              <td class="actions">
+                <a href="/updateproduct/<%= product.id %>" class="edit-button">
+                  <i class='bx bx-edit-alt'></i>
+                </a>
+                <a href="/deleteproduct/<%= product.id %>" class="delete-button">
+                  <i class='bx bx-trash-alt'></i>
+                </a>
+              </td>
+            </tr>
+            <% }); %>
+              <% } else { %>
+                <tr>
+                  <td colspan="2" style="text-align: center;">Nenhum estoque registrado</td>
+                  <td class="actions">
+                    <a href="/updateproduct/<%= product.id %>" class="edit-button">
+                      <i class='bx bx-edit-alt'></i>
+                    </a>
+                    <a href="/deleteproduct/<%= product.id %>" class="delete-button">
+                      <i class='bx bx-trash-alt'></i>
+                    </a>
+                  </td>
+                </tr>
+                <% } %>
+      </tbody>
+    </table>
+  </div>
+  <% }); %>
+
+    </div>
+
+    <script>
+
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+
+
+
+
+
+
+
+
+      document.getElementById('add-tamanho').addEventListener('click', function () {
+        const container = document.getElementById('tamanhos-container');
+        const newItem = document.createElement('div');
+        newItem.className = 'tamanho-item';
+        newItem.innerHTML = `
+        <input type="text" name="tamanhos[]" placeholder="Tamanho (ex: P, M, G)" required>
+        <input type="number" name="quantidades[]" placeholder="Quantidade" min="0" required>
+        <button type="button" class="remove-tamanho">Remover</button>
+      `;
+        container.appendChild(newItem);
+
+        // Adiciona evento de remoção ao novo botão
+        newItem.querySelector('.remove-tamanho').addEventListener('click', function () {
+          container.removeChild(newItem);
+        });
+      });
+
+      // Adiciona evento de remoção ao primeiro botão
+      document.querySelector('.remove-tamanho').addEventListener('click', function () {
+        const container = document.getElementById('tamanhos-container');
+        if (container.children.length > 1) {
+          container.removeChild(this.parentElement);
+        }
+      });
+    </script>
+    </body>
+
+</html>

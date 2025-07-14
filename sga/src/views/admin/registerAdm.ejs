@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Administrador | SGA</title>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+
+    <link rel="stylesheet" href="css/register.css">
+</head>
+
+<body>
+    <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+    <div class="container">
+        <!-- Coluna Direita (Formulário) -->
+        <div class="right">
+            <h2>Cadastrar Administrador</h2>
+            <% if (query.error==='username_exists' ) { %>
+                <div class="alert alert-danger">
+                    O nome de usuário já está cadastrado.
+                </div>
+                <% } %>
+                    <form action="/registerAdm" method="POST">
+                        <input type="text" id="admin" name="admin" placeholder="Nome de Usuário" required>
+                        <input type="email" id="email" name="email" placeholder="E-mail" required>
+                        <select id="etec" name="etec" required>
+                            <option value="" disabled selected>Selecione sua ETEC</option>
+                            <option value="ETEC BENTO QUIRINO - Campinas">ETEC BENTO QUIRINO</option>
+                        </select>
+                        <input type="password" id="password" name="password" placeholder="Senha" required>
+                        <button type="submit">Cadastre-se</button>
+                        <div class="text-center mt-3">
+                            <a href="/loginAdm">Já é administrador? Entre aqui</a>
+                        </div>
+                    </form>
+                <p style="text-align: center; font-size: 12px; color: #777; margin-top: 15px;">
+                                            © 2025 SGA. Todos os direitos reservados.
+                                        </p>
+        </div>
+
+        <!-- Coluna Esquerda -->
+        <div class="left">
+            <img src="/logo.svg" alt="Logo">
+            <h2>Se você já criou sua conta<br> clique no botão abaixo para logar</h2>
+            <a href="/loginAdm">Login</a>
+        </div>
+    </div>
+    <script>
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+</script>
+
+</body>
+
+</html>

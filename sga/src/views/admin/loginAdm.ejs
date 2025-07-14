@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login ADM | SGA</title>
+    <link rel="stylesheet" href="css/loginadm.css">
+</head>
+<body>
+    <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+    <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+    <div class="container">
+        <!-- Coluna Esquerda -->
+        <div class="left">
+            <img src="/logo.svg" alt="Logo"><span>Sistema de Gestão Academica</span>
+            <h2>Bem-vindo de volta!</h2>
+            <p>Não tem uma conta ainda?</p>
+            <a href="/registerAdm">Cadastre-se</a>
+        </div>
+
+        <!-- Coluna Direita -->
+        <div class="right">
+            <h2>Login</h2>
+            <% if (error) { %>
+                <p style="color: red;">
+                    <%= error === 'invalid' ? 'Usuário ou senha inválidos!' : 'Erro no servidor!' %>
+                </p>
+            <% } %>
+            <form action="/loginAdm" method="POST">
+                <input type="email" name="email" placeholder="Email" required>
+                <select class="form-select" id="etec" name="etec" required>
+                    <option value="" disabled selected>Selecione sua ETEC</option>
+                    <option value="Etec Bento Quirino - Campinas">Etec Bento Quirino</option>
+                </select>
+                <input type="password" name="password" placeholder="Senha" required>
+                <button type="submit"  class="admentrar">Entrar</button>
+                <a href="/login"> <button type="button" id="alunobotao" class="alunobotao" onclick="setAdmin()">Entrar como Aluno</button></a>
+
+                <div class="text-center">
+                    <a href="/reset-password">Esqueceu sua senha?</a>
+                </div>
+            <p style="text-align: center; font-size: 12px; color: #777; margin-top: 15px;">
+                © 2025 SGA. Todos os direitos reservados.
+            </p>
+            </form>
+        </div>
+    </div>
+<script>
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+</script>
+
+
+</body>
+</html>

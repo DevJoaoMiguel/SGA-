@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalhes do Produto | SGA</title>
+  <link rel="icon" href="/logo.svg" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/detalhes.css">
+
+</head>
+
+<body>
+  <div id="page-spinner" class="spinner-overlay">
+    <div class="spinner"></div>
+  </div>
+  <div class="container">
+    <img src="/uploads/<%= product.image %>" alt="<%= product.title %>" class="product-img">
+
+    <div class="product-info">
+      <!-- Container: título e preço -->
+      <div class="info-section">
+        <h1 class="product-title">
+          <%= product.title %>
+        </h1>
+      </div>
+
+      <!-- Container: tipo e informações -->
+      <div class="info-section">
+        <p class="product-type"><strong>Tipo:</strong>
+          <%= product.typeroupas %>
+        </p>
+        <p class="product-description"><strong>Informações:</strong> Após a compra aguarde o email  para retirar na secretaria</p>
+        <p class="product-price"><strong>Preço:</strong>$ <%= product.price.toFixed(2) %>
+        </p>
+      </div>
+
+      <!-- Container: seleção de tamanho + botões -->
+      <div class="info-section">
+        <div class="size-selector">
+          <label for="tamanho" class="size-label">Selecione o Tamanho:</label>
+          <select name="tamanho" id="tamanho" class="size-select" required>
+            <option value="">Escolha um tamanho</option>
+            <% if (stocks && stocks.length> 0) { %>
+              <% stocks.forEach(stock=> { %>
+                <% if (stock.quantidade> 0) { %>
+                  <option value="<%= stock.tamanho %>">
+                    <%= stock.tamanho %> - <%= stock.quantidade %> disponíveis
+                  </option>
+                  <% } %>
+                    <% }); %>
+                      <% } %>
+          </select>
+          <p class="stock-info">Selecione o tamanho desejado para verificar a disponibilidade</p>
+        </div>
+
+        <div class="button-container">
+          <form id="productForm" method="POST" action="/purchaseproduct">
+            <input type="hidden" name="productId" value="<%= product.id %>">
+            <input type="hidden" name="userId" id="userId" value="<%= userId %>">
+            <input type="hidden" name="tamanho" id="selectedSize">
+            <button type="submit" class="buy-button" id="buyButton" disabled>Comprar Agora</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href='/loja' class="btn-logout">
+    <i class='bx bx-log-out'></i>
+    Voltar para a loja
+  </a>
+</body>
+
+
+
+<script>
+
+
+
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Evita exibir o spinner para âncoras, targets externos e javascript:void
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+
+
+
+
+
+
+  document.getElementById('tamanho').addEventListener('change', function () {
+    const buyButton = document.getElementById('buyButton');
+    const selectedSize = document.getElementById('selectedSize');
+
+    if (this.value) {
+      buyButton.disabled = false;
+      selectedSize.value = this.value;
+    } else {
+      buyButton.disabled = true;
+      selectedSize.value = '';
+    }
+  });
+
+  document.getElementById('productForm').addEventListener('submit', function (e) {
+    const selectedSize = document.getElementById('tamanho').value;
+    if (!selectedSize) {
+      e.preventDefault();
+      alert('Por favor, selecione um tamanho antes de comprar.');
+    }
+  });
+</script>
+</body>
+
+</html>

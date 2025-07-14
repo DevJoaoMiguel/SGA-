@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | SGA</title>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+    <link rel="stylesheet" href="css/login.css">
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+    <div class="container">
+        <!-- Coluna Esquerda -->
+        <div class="left">
+            <img src="/logo.svg" alt="Logo"><span>Sistema de Gestão Academica</span>
+            <h2>Bem-vindo de volta!</h2>
+            <p>Não tem uma conta ainda?</p>
+            <a href="/register">Cadastre-se</a>
+        </div>
+
+        <!-- Coluna Direita -->
+        <div class="right">
+            <h2>Login</h2>
+            <% if (query.error) { %>
+                <div class="alert alert-danger">
+                    <%= query.error %>
+                </div>
+                <% } %>
+                    <form action="/login" method="POST">
+                        <div class="mb-3">
+                            <label for="rm" class="form-label">RM</label>
+                            <input type="text" class="form-control" id="rm" name="rm" required>
+                        </div>
+
+                        <!-- Campo de seleção de ETEC -->
+                        <div class="mb-3">
+                            <label for="etec" class="form-label">ETEC</label>
+                            <select class="form-select" id="etec" name="etec" required>
+                                <option value="" disabled selected>Selecione sua ETEC</option>
+                                <option value="Etec Bento Quirino - Campinas">Etec Bento Quirino</option>
+                                <!-- Adicione mais opções conforme necessário -->
+                            </select>
+                        </div>
+
+
+
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Senha</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <!-- Botão Administrador -->
+                        <button type="submit">Entrar</button>
+                        <a href="/loginAdm"> <button type="button" class="admin-button" onclick="setAdmin()">Entrar como
+                                Administrador</button></a>
+
+                        <div class="text-center mt-3">
+                            <a href="/reset-password">Esqueceu sua senha?</a>
+                        </div>
+                        <p style="text-align: center; font-size: 12px; color: #777; margin-top: 15px;">
+                            © 2025 SGA. Todos os direitos reservados.
+                        </p>
+                    </form>
+        </div>
+    </div>
+
+    <script>
+        
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Mostra o spinner apenas se o link não for âncora, JS ou com target
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+
+        function setAdmin() {
+            // Adiciona o valor do tipo de usuário "Administrador" ao formulário
+            document.querySelector('form').innerHTML += '<input type="hidden" name="role" value="administrador">';
+        }
+    </script>
+</body>
+
+</html>

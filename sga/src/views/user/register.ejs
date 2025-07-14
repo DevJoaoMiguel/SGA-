@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <link rel="icon" href="/logo.svg" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar-se | SGA</title>
+    <link rel="stylesheet" href="css/register.css">
+     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="page-spinner" class="spinner-overlay">
+  <div class="spinner"></div>
+</div>
+    <div class="container">
+        <!-- Coluna Direita (Formulário) -->
+        <div class="right">
+            <h2>Cadastre-se</h2>
+            <% if (query.error==='rm_exists' ) { %>
+                <div class="alert alert-danger">
+                    O RM informado já está cadastrado.
+                </div>
+                <% } %>
+                    <form action="/register" method="POST">
+                        <input type="text" id="Nome" name="Nome" placeholder="Nome" required>
+                        <input type="text" id="Sobrenome" name="Sobrenome" placeholder="Sobrenome" required>
+                        <input type="email" id="email" name="email" placeholder="E-mail" required>
+                        <input type="number" id="rm" name="rm" placeholder="RM" required>
+                        <div class="mb-3">
+                            <label for="etec" class="form-label">ETEC</label>
+                            <select class="form-select" id="etec" name="etec" required>
+                                <option value="" disabled selected>Selecione sua ETEC</option>
+                                <option value="ETEC BENTO QUIRINO - Campinas">ETEC BENTO QUIRINO</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipoEnsino">Selecione o tipo de ensino</label>
+                            <select name="tipoEnsino" id="tipoEnsino" required>
+                                <option value="" disabled selected>Selecione o tipo de ensino</option>
+                                <option value="ENSINO_MEDIO">Ensino Médio</option>
+                                <option value="TECNICO">Técnico</option>
+                            </select>
+                        </div>
+
+                        <div id="ensinoMedioFields" class="hidden">
+                            <div class="radio-group">
+                                <label><input type="radio" name="anoCurso" value="1"> 1º Ano</label>
+                                <label><input type="radio" name="anoCurso" value="2"> 2º Ano</label>
+                                <label><input type="radio" name="anoCurso" value="3"> 3º Ano</label>
+                            </div>
+
+                            <label for="cursoMedio">Curso (Ensino Médio)</label>
+                            <select name="curso" id="cursoMedio">
+                                <option value="" disabled selected>Selecione o Curso</option>
+                                <option value="MTEC ADMINISTRACAO">MTEC - ADMINISTRAÇÃO - INTEGRADO</option>
+                                <option value="MTEC ELETRONICA">MTEC - ELETRONICA - INTEGRADO</option>
+                                <option value="MTEC LOGISTICA">MTEC - LOGÍSTICA - INTEGRADO</option>
+                                <option value="MTEC MECANICA">MTEC - MECÂNICA - INTEGRADO</option>
+                                <option value="MTEC DES.SISTEMA">MTEC - DES.SISTEMA - MANHA</option>
+                                <option value="MTEC DES.SISTEMA - INTEGRADO">MTEC - DES.SISTEMA - INTEGRADO</option>
+                                <option value="MTEC DES.SISTEMA (A.M.S)">MTEC - DES.SISTEMA (A.M.S) - TARDE</option>
+                                <option value="MTEC ELETROTECNICA">MTEC - ELETROTÉCNICA - MANHÃ</option>
+                            </select>
+                        </div>
+
+
+
+
+
+                        <div id="tecnicoFields" class="hidden">
+                            <div class="radio-group">
+                                <label><input type="radio" name="anoCurso" value="1"> Módulo 1</label>
+                                <label><input type="radio" name="anoCurso" value="2"> Módulo 2</label>
+                                <label><input type="radio" name="anoCurso" value="30"> Módulo 3</label>
+                            </div>
+
+                            <label for="cursoTecnico">Curso (Técnico)</label>
+                            <select name="curso" id="cursoTecnico">
+                                <option value="" disabled selected>Selecione o Curso</option>
+                                <option value="ADMINISTRACAO MODULAR">ADMINISTRAÇÃO</option>
+                                <option value="ELETRONICA MODULAR">ELETRONICA</option>
+                                <option value="ELETROTECNICA MODULAR">ELETROTÉCNICA</option>
+                                <option value="MECANICA MODULAR">MECANICA</option>
+                            </select>
+                        </div>
+
+
+
+
+                        <input type="password" id="password" name="password" placeholder="Senha" required>
+
+                        <!-- Termos de Uso -->
+                        <div class="terms-container">
+                            <input type="checkbox" id="termsCheckbox" required>
+                            <label for="termsCheckbox">
+                                Aceito os <a href="javascript:void(0);" id="termsLink">Termos de Uso</a>
+                            </label>
+                        </div>
+
+                        <button type="submit">Criar Conta</button>
+                        <p style="text-align: center; font-size: 12px; color: #777; margin-top: 15px;">
+                            © 2025 SGA. Todos os direitos reservados.
+                        </p>
+                    </form>
+        </div>
+
+
+        <div class="left">
+            <img src="/logo.svg" alt="Logo">
+            <h2>Se você já criou sua conta<br> clique no botão abaixo para logar</h2>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Termos de Uso</h2>
+            <p>Bem-vindo ao site www.sga.com. Ao acessar e utilizar nossos serviços, você declara estar ciente e de
+                acordo com os Termos de Uso descritos abaixo. Caso não concorde com os termos, não será possível
+                utilizar os serviços oferecidos por este site. Pedimos que leia atentamente todas as condições antes de
+                continuar o uso de nossa plataforma.</p>
+            <br>
+            <p><strong>1. Aceitação dos Termos</strong></p>
+            <p>Ao acessar e navegar no site www.sga.com, ou ao utilizar nossos serviços, o usuário reconhece que leu,
+                compreendeu e concorda com os Termos de Uso estabelecidos neste documento. Caso não concorde com
+                qualquer uma das condições descritas, o usuário deverá interromper o uso do site e de seus serviços
+                imediatamente. O acesso ao site implica na aceitação integral dos Termos de Uso, os quais podem ser
+                atualizados ou modificados periodicamente sem aviso prévio.</p>
+            <br>
+            <p><strong>2. Descrição dos Serviços</strong></p>
+            <p>O site www.sga.com oferece um sistema exclusivo para o gerenciamento de armários e a realização de
+                compras online, com funcionalidades voltadas para otimizar a experiência do usuário. O uso de nossos
+                serviços requer que o usuário possua uma conta cadastrada, para garantir acesso personalizado às
+                funcionalidades disponíveis. Todos os recursos são projetados para proporcionar praticidade e segurança
+                aos usuários ao gerenciar suas atividades no site.</p>
+            <br>
+            <p><strong>3. Cadastro e Login</strong></p>
+            <p>Para utilizar os serviços oferecidos, o usuário deve se cadastrar criando uma conta pessoal. O cadastro
+                exige que o usuário forneça informações precisas e verdadeiras. O login no sistema é necessário para
+                acessar áreas restritas e usufruir dos serviços disponíveis. O usuário concorda em manter suas
+                credenciais (usuário e senha) em segredo, sendo integralmente responsável por qualquer atividade que
+                ocorra sob sua conta.</p>
+            <br>
+            <p><strong>4. Uso do Sistema</strong></p>
+            <p>O uso do sistema é restrito a usuários devidamente registrados e autorizados. O usuário concorda em não
+                compartilhar suas credenciais de acesso com terceiros e compromete-se a notificar imediatamente a
+                administração do site em caso de uso não autorizado de sua conta. O site não se responsabiliza por danos
+                decorrentes de negligência do usuário em relação à segurança de sua conta.</p>
+            <br>
+            <p><strong>5. Propriedade Intelectual</strong></p>
+            <p>Todo o conteúdo acessado através do site, incluindo, mas não se limitando a textos, imagens, logotipos,
+                ícones, gráficos, software e outros materiais, são de propriedade da SGA ou de seus licenciadores e
+                estão protegidos por direitos autorais, marcas registradas e outras leis de propriedade intelectual. O
+                usuário concorda em não reproduzir, distribuir, modificar ou criar obras derivadas do conteúdo do site
+                sem a devida autorização da SGA.</p>
+            <br>
+            <p><strong>6. Limitações de Responsabilidade</strong></p>
+            <p>A SGA não se responsabiliza por danos diretos, indiretos, incidentais, especiais ou consequenciais
+                resultantes do uso, ou da incapacidade de uso, do site ou de qualquer um de seus serviços. O uso do site
+                é de total responsabilidade do usuário, que o faz por sua conta e risco. A SGA não garante que o site ou
+                seus serviços estarão sempre livres de erros ou interrupções.</p>
+            <br>
+            <p><strong>7. Modificações nos Termos de Uso</strong></p>
+            <p>A SGA reserva-se o direito de modificar, a qualquer momento, estes Termos de Uso. Quaisquer alterações
+                serão publicadas nesta mesma página, com a data de atualização visível no topo do documento. O uso
+                contínuo do site após a publicação das alterações implica na aceitação das novas condições. É
+                responsabilidade do usuário revisar periodicamente os Termos de Uso para se manter informado sobre as
+                mudanças.</p>
+            <br>
+            <p><strong>8. Legislação Aplicável e Resolução de Conflitos</strong></p>
+            <p>Estes Termos de Uso são regidos pelas leis do [Seu País/Estado]. Em caso de disputas relacionadas ao uso
+                do site ou aos Termos de Uso, as partes concordam que a resolução será feita nos tribunais competentes
+                da jurisdição de [Sua Jurisdição]. Caso algum termo seja considerado inválido ou inaplicável, as demais
+                disposições permanecerão em vigor.</p>
+            <br>
+            <p><strong>9. Contato</strong></p>
+            <p>Caso o usuário tenha dúvidas sobre os Termos de Uso ou queira esclarecer alguma questão relacionada à
+                nossa plataforma, ele poderá entrar em contato conosco por meio do e-mail:
+                <strong>contatosgaadm@gmail.com</strong>. Nossa equipe está à disposição para fornecer as informações
+                necessárias.
+            </p>
+            <br>
+            <p><strong>10. Aceitação Final dos Termos</strong></p>
+            <p>Ao utilizar os serviços do site www.sga.com, o usuário declara que leu, entendeu e concorda com todos os
+                Termos de Uso aqui apresentados. O uso do site está condicionado à plena aceitação destes termos, que
+                regem todas as interações no site, desde o cadastro até a utilização dos serviços.</p>
+            <br>
+        </div>
+    </div>
+
+
+    <script>
+
+
+
+  const spinner = document.getElementById("page-spinner");
+
+  document.querySelectorAll("a[href]").forEach(link => {
+    link.addEventListener("click", function (e) {
+      const href = link.getAttribute("href");
+
+      // Mostra o spinner apenas se o link não for âncora, JS ou com target
+      if (
+        !href.startsWith("#") &&
+        !link.hasAttribute("target") &&
+        !href.startsWith("javascript:")
+      ) {
+        spinner.style.display = "flex";
+      }
+    });
+  });
+
+
+
+        const termsCheckbox = document.getElementById('termsCheckbox');
+        const termsModal = document.getElementById('termsModal');
+        const termsLink = document.getElementById('termsLink');
+        const closeModal = document.getElementById('closeModal');
+
+        // Abrir modal de Termos de Uso
+        termsLink.addEventListener('click', function () {
+            termsModal.style.display = "block";
+        });
+
+        // Fechar modal de Termos de Uso
+        closeModal.addEventListener('click', function () {
+            termsModal.style.display = "none";
+        });
+
+        // Fechar modal clicando fora da área do conteúdo
+        window.addEventListener('click', function (event) {
+            if (event.target === termsModal) {
+                termsModal.style.display = "none";
+            }
+        });
+
+        document.getElementById('tipoEnsino').addEventListener('change', function () {
+            const ensinoMedioFields = document.getElementById('ensinoMedioFields');
+            const tecnicoFields = document.getElementById('tecnicoFields');
+
+            ensinoMedioFields.classList.add('hidden');
+            tecnicoFields.classList.add('hidden');
+
+            if (this.value === 'ENSINO_MEDIO') {
+                ensinoMedioFields.classList.remove('hidden');
+            } else if (this.value === 'TECNICO') {
+                tecnicoFields.classList.remove('hidden');
+            }
+        });
+
+    </script>
+</body>
+
+</html>
